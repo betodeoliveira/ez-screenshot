@@ -9,16 +9,16 @@ The screenshots will be ready to be shared with customers, followers and clients
 Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 </br>
 <strong>Available Mockups:</strong></br>
-- <strong>Computers:</strong></br>
+<strong>Computers:</strong></br>
 	- Apple iMac;</br>
 	- Apple iMac Pro;</br>
 	- Apple MacBook;</br>
 	- Apple MacBook Pro;</br>
 	- Dell XPS 13;</br>
 	- Dell XPS 15.</br>
-- <strong>Consoles:</strong></br>
+<strong>Consoles:</strong></br>
 	- Nintendo Switch.</br>
-- <strong>Smartphones:</strong></br>
+<strong>Smartphones:</strong></br>
 	- Apple iPhone 8;</br>
 	- Apple iPhone XR;</br>
 	- Apple iPhone XS;</br>
@@ -31,9 +31,9 @@ Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 	- Samsung Galaxy S9;</br>
 	- Samsung Galaxy S10;</br>
 	- Samsung Galaxy S10 Plus.</br>
-- <strong>Tablets:</strong></br>
+<strong>Tablets:</strong></br>
 	- Apple iPad Pro;</br>
-- <strong>Watches:</strong></br>
+<strong>Watches:</strong></br>
 	- Apple Watch Series 4;</br>
 </br>
 New mockups are added constantly.</br>
