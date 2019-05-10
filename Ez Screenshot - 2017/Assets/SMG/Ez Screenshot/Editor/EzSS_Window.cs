@@ -70,6 +70,7 @@ namespace SMG.EzScreenshot
                 template.UpdateTemplatesReList();
                 encodeSettings.UpdateCamerasReList();
                 background.UpdateBgColorsReList();
+                Repaint();
             }
             EditorGUI.EndDisabledGroup();
             EzSS_Style.DrawUILine(EzSS_Style.uiLineColor);
@@ -83,6 +84,7 @@ namespace SMG.EzScreenshot
         {
             EzSS_Window _window = (EzSS_Window)EditorWindow.GetWindow(typeof(EzSS_Window));
             _window.minSize = new Vector2(380, 650);
+            _window.maxSize = new Vector2(500, 1000);
             _window.titleContent = new GUIContent(" Ez Screenshot", EditorGUIUtility.FindTexture("d_RectTransformBlueprint"));
             _window.autoRepaintOnSceneChange = true;
             _window.Show();

@@ -70,8 +70,8 @@ namespace SMG.EzScreenshot
         private string lastOrientationName;
         private bool downloadMockupTexture = false;
         private bool downloadScreenTexture = false;
+        private bool isFirstDownload = false;
         private bool forceGuiChange = false;
-        private bool firstDownload = true; // tells to the check method that is the first download after a reloading
         private int mockupDownloadDelayCounter; // Delays the downloaded of the texture when the project gets loaded
 
         public void Init(EzSS_EncodeSettings encodeSettings)
@@ -82,12 +82,12 @@ namespace SMG.EzScreenshot
             computers.Init(this);
             tablets.Init(this);
             watches.Init(this);
-            firstDownload = true;
             // Set the names
             selectedMockupName = mockups[selectedCategory][selectedMockupIndex];
             selectedColorName = mockupsColors[selectedMockupName][selectedColorIndex];
             selectedCategoryName = selectedCategory.ToString();
             selectedOrientationName = selectedOrientation.ToString();
+            isFirstDownload = true;
         }
 
         public void Draw(int mockupDownloadDelayCounter)
@@ -176,7 +176,7 @@ namespace SMG.EzScreenshot
             }
             selectedOrientationName = selectedOrientation.ToString();
             // After the selection check if the textures exists on the project
-            CheckMockupTextures(firstDownload);
+            CheckMockupTextures();
         }
 
         private void DrawPreview()
@@ -195,7 +195,7 @@ namespace SMG.EzScreenshot
             }
         }
 
-        private void CheckMockupTextures(bool isFirstDownload = false)
+        private void CheckMockupTextures()
         {
             if (encodeSettings.useMockup &&
             (!string.Equals(lastMockupName, selectedMockupName) ||
@@ -203,8 +203,6 @@ namespace SMG.EzScreenshot
             !string.Equals(lastOrientationName, selectedOrientationName) ||
             mockupTexture == null))
             {
-                downloadScreenTexture = true;
-                downloadMockupTexture = true;
                 // creates the final url
                 string _mockupUrl = texturesURL + selectedCategoryName + "/" + selectedMockupName + "-" + selectedColorName + "-" + selectedOrientationName + ".png";
                 string _screenUrl = texturesURL + selectedCategoryName + "/" + selectedMockupName + "-screen" + "-" + selectedOrientationName + ".png";
@@ -232,23 +230,27 @@ namespace SMG.EzScreenshot
                 {
                     return;
                 }
-                else if (isFirstDownload)
+                else if(isFirstDownload)
                 {
-                    DownloadScreenTexture(_screenUrl, false);
-                    DownloadMockupTexture(_mockupUrl, false);
+                    DownloadScreenTexture(_screenUrl);
+                    DownloadMockupTexture(_mockupUrl);
+                    isFirstDownload = false;
                 }
                 else if (downloadMockupTexture && !downloadScreenTexture)
                 {
-                    DownloadMockupTexture(_mockupUrl, true);
+                    DownloadMockupTexture(_mockupUrl);
+                    GUIUtility.ExitGUI();
                 }
                 else if (!downloadMockupTexture && downloadScreenTexture)
                 {
-                    DownloadScreenTexture(_screenUrl, true);
+                    DownloadScreenTexture(_screenUrl);
+                    GUIUtility.ExitGUI();
                 }
-                else if (downloadMockupTexture && downloadScreenTexture)
+                else if (downloadMockupTexture && downloadScreenTexture) 
                 {
-                    DownloadScreenTexture(_screenUrl, false);
-                    DownloadMockupTexture(_mockupUrl, true);
+                    DownloadScreenTexture(_screenUrl);
+                    DownloadMockupTexture(_mockupUrl);
+                    GUIUtility.ExitGUI();
                 }
                 else
                 {
@@ -257,7 +259,7 @@ namespace SMG.EzScreenshot
             }
         }
 
-        private void DownloadMockupTexture(string url, bool exitGUI)
+        private void DownloadMockupTexture(string url)
         {
             EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockTexture, 0);
             WWW _wwwLoader = new WWW(url);
@@ -284,13 +286,9 @@ namespace SMG.EzScreenshot
             lastMockupName = selectedMockupName;
             lastColorName = selectedColorName;
             lastOrientationName = selectedOrientationName;
-            if (exitGUI)
-            {
-                GUIUtility.ExitGUI();
-            }
         }
 
-        private void DownloadScreenTexture(string url, bool exitGUI)
+        private void DownloadScreenTexture(string url)
         {
             EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockupScreen, 0);
             WWW _wwwLoader = new WWW(url);
@@ -311,11 +309,6 @@ namespace SMG.EzScreenshot
             screenTexture = _wwwLoader.texture;
             screensTexturesKeys.Add(url);
             screensTextures.Add(screenTexture);
-            firstDownload = false;
-            if (exitGUI)
-            {
-                GUIUtility.ExitGUI();
-            }
         }
     }
 }
