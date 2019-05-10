@@ -94,15 +94,15 @@ MonoBehaviour:
       lastMockupAspectType: 1
       mockupPortraitAspectIndex: 0
       mockupLandscapeAspectIndex: 5
-      mockupWidth: 926
-      mockupHeight: 1400
+      mockupWidth: 71
+      mockupHeight: 100
       mockupResAspect: 1:1
       aspectVector: {x: 1, y: 1}
     mockup:
       selectedCategory: 4
       selectedOrientation: 0
       selectedMockupIndex: 1
-      selectedColorIndex: 3
+      selectedColorIndex: 5
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
       direction: {x: -2, y: -3}

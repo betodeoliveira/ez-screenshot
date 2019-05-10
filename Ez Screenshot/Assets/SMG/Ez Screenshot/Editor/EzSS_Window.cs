@@ -70,6 +70,7 @@ namespace SMG.EzScreenshot
                 template.UpdateTemplatesReList();
                 encodeSettings.UpdateCamerasReList();
                 background.UpdateBgColorsReList();
+                Repaint();
             }
             EditorGUI.EndDisabledGroup();
             EzSS_Style.DrawUILine(EzSS_Style.uiLineColor);
