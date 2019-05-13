@@ -35,8 +35,8 @@ Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 	- Apple iPad Pro.</br>
 - <strong>Watches:</strong></br>
 	- Apple Watch Series 4;</br>
-	- Motorola Moto 360 42mm;
-	- Motorola Moto 360 46mm.
+	- Motorola Moto 360 42mm;</br>
+	- Motorola Moto 360 46mm.</br>
 </br>
 New mockups are added constantly.</br>
 </br>
