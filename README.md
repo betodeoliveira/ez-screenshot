@@ -32,9 +32,11 @@ Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 	- Samsung Galaxy S10;</br>
 	- Samsung Galaxy S10 Plus.</br>
 - <strong>Tablets:</strong></br>
-	- Apple iPad Pro;</br>
+	- Apple iPad Pro.</br>
 - <strong>Watches:</strong></br>
 	- Apple Watch Series 4;</br>
+	- Motorola Moto 360 42mm;
+	- Motorola Moto 360 46mm.
 </br>
 New mockups are added constantly.</br>
 </br>
