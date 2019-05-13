@@ -94,8 +94,8 @@ MonoBehaviour:
       lastMockupAspectType: 1
       mockupPortraitAspectIndex: 0
       mockupLandscapeAspectIndex: 5
-      mockupWidth: 71
-      mockupHeight: 100
+      mockupWidth: 990
+      mockupHeight: 1400
       mockupResAspect: 1:1
       aspectVector: {x: 1, y: 1}
     mockup:
