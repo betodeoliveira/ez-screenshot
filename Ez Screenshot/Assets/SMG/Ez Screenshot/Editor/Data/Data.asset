@@ -92,17 +92,17 @@ MonoBehaviour:
       gameViewAspect: Free
       mockupAspectType: 1
       lastMockupAspectType: 1
-      mockupPortraitAspectIndex: 0
+      mockupPortraitAspectIndex: 13
       mockupLandscapeAspectIndex: 5
-      mockupWidth: 990
-      mockupHeight: 1400
-      mockupResAspect: 1:1
-      aspectVector: {x: 1, y: 1}
+      mockupWidth: 298
+      mockupHeight: 239
+      mockupResAspect: 16:9
+      aspectVector: {x: 16, y: 9}
     mockup:
-      selectedCategory: 4
+      selectedCategory: 2
       selectedOrientation: 0
       selectedMockupIndex: 1
-      selectedColorIndex: 5
+      selectedColorIndex: 0
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
       direction: {x: -2, y: -3}

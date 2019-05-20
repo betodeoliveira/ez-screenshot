@@ -14,6 +14,7 @@ namespace SMG.EzScreenshot
         private EzSS_Smartphones smartphones = new EzSS_Smartphones();
         private EzSS_Consoles consoles = new EzSS_Consoles();
         private EzSS_Computers computers = new EzSS_Computers();
+        private EzSS_Displays displays = new EzSS_Displays();
         private EzSS_Tablets tablets = new EzSS_Tablets();
         private EzSS_Watches watches = new EzSS_Watches();
         // These dictionaries will chance when the category changes
@@ -31,6 +32,7 @@ namespace SMG.EzScreenshot
         {
             computer,
             console,
+            display,
             smartphone,
             tablet,
             watch
@@ -80,6 +82,7 @@ namespace SMG.EzScreenshot
             smartphones.Init(this);
             consoles.Init(this);
             computers.Init(this);
+            displays.Init(this);
             tablets.Init(this);
             watches.Init(this);
             // Set the names

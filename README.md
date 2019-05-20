@@ -18,6 +18,9 @@ Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 	- Dell XPS 15.</br>
 - <strong>Consoles:</strong></br>
 	- Nintendo Switch.</br>
+- <strong>Displays:</strong></br>
+	- Apple Thunderbolt;</br>
+	- Dell UltraSharp HD;</br>
 - <strong>Smartphones:</strong></br>
 	- Apple iPhone 8;</br>
 	- Apple iPhone XR;</br>
