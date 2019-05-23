@@ -80,8 +80,8 @@ MonoBehaviour:
       lastScreenshotAspectType: 1
       screenshotPortraitAspectIndex: 0
       screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 1500
-      screenshotHeight: 1500
+      screenshotWidth: 500
+      screenshotHeight: 500
       screenshotAspect: 1:1
       gameViewAspectType: 0
       lastGameViewAspectType: 0
@@ -94,14 +94,14 @@ MonoBehaviour:
       lastMockupAspectType: 1
       mockupPortraitAspectIndex: 13
       mockupLandscapeAspectIndex: 5
-      mockupWidth: 298
-      mockupHeight: 239
+      mockupWidth: 429
+      mockupHeight: 327
       mockupResAspect: 16:9
       aspectVector: {x: 16, y: 9}
     mockup:
       selectedCategory: 2
       selectedOrientation: 0
-      selectedMockupIndex: 1
+      selectedMockupIndex: 0
       selectedColorIndex: 0
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
