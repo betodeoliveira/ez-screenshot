@@ -37,11 +37,13 @@ Ez Screenshot runs directly in Editor and is available on all platforms.</br>
 - <strong>Tablets:</strong></br>
 	- Apple iPad Pro.</br>
 - <strong>Watches:</strong></br>
+	- Apple Watch Series 1;</br>
+	- Apple Watch Series 2;</br>
 	- Apple Watch Series 4;</br>
 	- Motorola Moto 360 42mm;</br>
 	- Motorola Moto 360 46mm.</br>
 </br>
-New mockups are added constantly.</br>
+New mockups are being added constantly.</br>
 </br>
 <a href="https://solomidgames.com/guides/ez-screenshot/quick-overview.html">Documentation</a>
 -
