@@ -22,7 +22,7 @@ namespace SMG.EzScreenshot
             mockup.mockupsColors.Add("apple-watch", new List<string>() { "blackSteel+black", "edition", "gold+midnightBlue", "goldAluminum+cocoa", "roseGold+blackLeather", "roseGold+lavender", "roseGoldAluminum+midnightBlue", 
             "silderAluminum+concrete", "silverAluminum+flatSilverVoltNike", "silverAluminum+flatSilverWhiteNike", "silverAluminum+green", "silverAluminum+lightPink", "silverAluminum+oceanBlue", "silverAluminum+pinkSand", 
             "silverAluminum+red", "silverAluminum+turquoise", "silverAluminum+white", "silverAluminum+yellow", "spaceBlackSteel+black", "spaceGrayAluminum+black", "spaceGrayAluminum+blackCoolGrayNike", 
-            "spaceGrayAluminum+bloackVoltNike", "sportAluminum+blue", "sportAluminum+fog", "sportAluminum+green", "sportAluminum+red", "sportAluminum+walnut", "sportAluminum+white", "sportAluminumGold+antiqueWhite", 
+            "spaceGrayAluminum+blackVoltNike", "sportAluminum+blue", "sportAluminum+fog", "sportAluminum+green", "sportAluminum+red", "sportAluminum+walnut", "sportAluminum+white", "sportAluminumGold+antiqueWhite", 
             "sportAluminumRoseGold+stone", "sportSpaceGray+black", "stainlessSteel+blackLeather", "steel+snowWhite", "steel+white" });
             mockup.mockupsColors.Add("apple-watch4", new List<string>() { "black", "roseGold", "white" });
             mockup.mockupsColors.Add("motorola-moto360-42mm", new List<string>() { "gold+blush", "gold+stoneGrey", "roseGold+blush", "roseGold+stoneGrey", "silver+blush", "silver+stoneGrey", });
