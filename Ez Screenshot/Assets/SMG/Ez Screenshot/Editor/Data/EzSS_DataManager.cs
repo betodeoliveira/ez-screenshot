@@ -7,7 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public class EzSS_DataManager : ScriptableObject
     {

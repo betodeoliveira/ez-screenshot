@@ -7,7 +7,7 @@ using System.Threading;
 using UnityEngine;
 using System;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
 	public class EzSS_TextureScaler
 	{ 

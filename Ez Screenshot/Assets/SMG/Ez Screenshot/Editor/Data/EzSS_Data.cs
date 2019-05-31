@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     [Serializable]
     public class EzSS_Data : ScriptableObject

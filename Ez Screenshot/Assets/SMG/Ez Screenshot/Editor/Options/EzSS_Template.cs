@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public class EzSS_Template : ScriptableObject
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public class EzSS_Style : Editor
     {

@@ -1,4 +1,4 @@
-﻿namespace SMG.EzScreenshot.FEEDBACKS
+﻿namespace SMG.OldEzScreenshot.FEEDBACKS
 {
     public class Titles
     {

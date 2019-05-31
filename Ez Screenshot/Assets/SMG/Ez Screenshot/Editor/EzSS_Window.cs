@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public class EzSS_Window : EditorWindow
     {

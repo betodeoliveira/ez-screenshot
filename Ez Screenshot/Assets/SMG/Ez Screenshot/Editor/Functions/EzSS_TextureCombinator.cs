@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public static class EzSS_TextureCombinator
     {

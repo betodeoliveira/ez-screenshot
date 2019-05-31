@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SMG.EzScreenshot
+namespace SMG.OldEzScreenshot
 {
     public class EzSS_TakeScreenshot : ScriptableObject
     {
