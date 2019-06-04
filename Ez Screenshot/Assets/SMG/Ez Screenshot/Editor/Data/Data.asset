@@ -71,7 +71,7 @@ MonoBehaviour:
       namePrefix: 
       useDate: 0
       useTime: 0
-      useMockup: 1
+      useMockup: 0
       useShadow: 0
       useBackground: 0
       saveAtPath: /Users/albertodeoliveira/Desktop
@@ -97,7 +97,7 @@ MonoBehaviour:
       mockupWidth: 223
       mockupHeight: 400
       mockupResAspect: 4:5
-      aspectVector: {x: 4, y: 5}
+      aspectVector: {x: 0, y: 0}
     mockup:
       selectedCategory: 5
       selectedOrientation: 0
