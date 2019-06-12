@@ -5,7 +5,7 @@ using UnityEditor;
 using System;
 using UnityEditorInternal;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public class EzSS_EncodeSettings : ScriptableObject
     {
@@ -60,7 +60,7 @@ namespace SMG.OldEzScreenshot
             };
 
             camerasReList.onRemoveCallback = (ReorderableList list) =>
-            {
+            { 
                 cameras.RemoveAt(camerasReList.index);
             };
         }
@@ -126,7 +126,6 @@ namespace SMG.OldEzScreenshot
                 EditorGUILayout.EndHorizontal();
                 EditorGUI.indentLevel--;
             }
-
         }
 
         private void DrawNameConfig()
@@ -158,6 +157,11 @@ namespace SMG.OldEzScreenshot
 
         private void DrawSaveAtConfig()
         {
+            // Check if the path still exists
+            if (!string.IsNullOrEmpty(saveAtPath) && !System.IO.Directory.Exists(saveAtPath))
+            {
+                saveAtPath = string.Empty;
+            }
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(" ");
             GUILayout.Space(-15);
@@ -166,9 +170,13 @@ namespace SMG.OldEzScreenshot
             GUILayout.Space(-1);
             // Location Text Area
             if (string.IsNullOrEmpty(saveAtPath))
+            {
                 EditorGUILayout.TextField(FEEDBACKS.Configuration.mustBrowseLocation);
+            }
             else
+            {
                 EditorGUILayout.TextField(saveAtPath);
+            }
             EditorGUILayout.EndVertical();
             EditorGUI.EndDisabledGroup();
             GUILayout.Space(-10);

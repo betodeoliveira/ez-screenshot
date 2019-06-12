@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public class EzSS_Devices
     {

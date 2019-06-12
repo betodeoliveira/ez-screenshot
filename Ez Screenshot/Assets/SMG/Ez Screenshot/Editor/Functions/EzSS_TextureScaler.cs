@@ -7,43 +7,37 @@ using System.Threading;
 using UnityEngine;
 using System;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
 	public class EzSS_TextureScaler
 	{ 
-		public static Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight, bool gpuScaling, FilterMode mode)
+		public static void ScaleTexture(Texture2D source, int targetWidth, int targetHeight, bool gpuScaling, FilterMode mode)
 		{
-			Texture2D _result = new Texture2D(source.width, source.height, TextureFormat.ARGB32, true);
-			_result.SetPixels(source.GetPixels());
 			if(gpuScaling)
 			{
-				GpuScaling(_result, targetWidth, targetHeight, mode);
+				GpuScaling(source, targetWidth, targetHeight, mode);
 			}
 			else
 			{
 				switch(mode)
 				{
 				case FilterMode.Point:
-					Point(_result, targetWidth, targetHeight);
+					Point(source, targetWidth, targetHeight);
 					break;
 				
 				case FilterMode.Bilinear:
-					Bilinear(_result, targetWidth, targetHeight);
+					Bilinear(source, targetWidth, targetHeight);
 					break;
 				
 				case FilterMode.Trilinear:
-					Bilinear(_result, targetWidth, targetHeight);
+					Bilinear(source, targetWidth, targetHeight);
 					break;
 				}
 			}
-			
-			return _result;
 		}
 		
-		public static Texture2D ScaleTextureProportionally(Texture2D source, int amount, bool gpuScaling, FilterMode mode)
+		public static void ScaleTextureProportionally(Texture2D source, int amount, bool gpuScaling, FilterMode mode)
 		{
-			Texture2D _result = new Texture2D(source.width, source.height, TextureFormat.ARGB32, true);
-			_result.SetPixels(source.GetPixels());
 			// Figure out the ratio
 			double _ratioX = (double)(source.width + amount) / (double) source.width;
 			double _ratioY = (double) (source.height + amount) / (double) source.height;
@@ -55,26 +49,25 @@ namespace SMG.OldEzScreenshot
 
 			if(gpuScaling)
 			{
-				GpuScaling(_result, _newWidth, _newHeight, mode);
+				GpuScaling(source, _newWidth, _newHeight, mode);
 			}
 			else
 			{
 				switch(mode)
 				{
 				case FilterMode.Point:
-					Point(_result, _newWidth, _newHeight);
+					Point(source, _newWidth, _newHeight);
 					break;
 				
 				case FilterMode.Bilinear:
-					Bilinear(_result, _newWidth, _newHeight);
+					Bilinear(source, _newWidth, _newHeight);
 					break;
 				
 				case FilterMode.Trilinear:
-					Bilinear(_result, _newWidth, _newHeight);
+					Bilinear(source, _newWidth, _newHeight);
 					break;
 				}
 			}
-			return _result;
 		}
     	
 		private static void GpuScaling(Texture2D tex, int width, int height, FilterMode mode)

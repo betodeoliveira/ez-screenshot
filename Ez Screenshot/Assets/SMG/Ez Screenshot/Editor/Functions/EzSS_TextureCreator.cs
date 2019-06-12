@@ -2,7 +2,7 @@
 using UnityEditor;
 using System;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public static class EzSS_TextureCreator
     {
@@ -12,7 +12,6 @@ namespace SMG.OldEzScreenshot
         {
             // Creates three temp textures that will be the base to create the final texture
             Texture2D _resultTexture = new Texture2D(width, height, textureFormat, true);
-            Texture2D _backgroundTexture = new Texture2D(width, height, textureFormat, true);
             Texture2D _foregroundTexture = new Texture2D(width, height, textureFormat, true);
             // Creates an array with the cameras list
             Camera[] _cameras = configuration.cameras.ToArray();
@@ -25,30 +24,30 @@ namespace SMG.OldEzScreenshot
             for (int i = 0; i < _cameras.Length; i++)
             {
                 if (i == 0)
-                    _resultTexture = SetRenderTexture(_cameras[i], width, height);
+                {
+                    SetRenderTexture(_cameras[i], _resultTexture);
+                }
+
                 else
                 {
-                    _backgroundTexture = _resultTexture;
-                    _foregroundTexture = SetRenderTexture(_cameras[i], width, height);
-                    _resultTexture = EzSS_TextureCombinator.Simple(_backgroundTexture, _foregroundTexture, true);
+                    SetRenderTexture(_cameras[i], _foregroundTexture);
+                    _resultTexture = EzSS_TextureCombinator.Simple(_resultTexture, _foregroundTexture, true);
                 }
             }
             // Return the final texture
             return _resultTexture;
         }
 
-        private static Texture2D SetRenderTexture(Camera cam, int width, int height)
+        private static void SetRenderTexture(Camera cam, Texture2D source)
         {
-            RenderTexture _renderTexture = new RenderTexture(width, height, 24);
-            Texture2D _texture = new Texture2D(width, height, textureFormat, true);
+            RenderTexture _renderTexture = new RenderTexture(source.width, source.height, 24);
             RenderTexture.active = _renderTexture;
             cam.targetTexture = _renderTexture;
             cam.Render();
-            _texture.ReadPixels(new Rect(0, 0, width, height), 0, 0, true);
-            _texture.Apply();
+            source.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0, true);
+            source.Apply();
             cam.targetTexture = null;
             RenderTexture.active = null;
-            return _texture;
         }
 
         public static Texture2D Mockup(EzSS_Mockup mockup, int width, int height)
@@ -56,7 +55,7 @@ namespace SMG.OldEzScreenshot
             Texture2D _mockupTexture = new Texture2D(mockup.mockupTexture.width, mockup.mockupTexture.height, textureFormat, true);
             _mockupTexture.SetPixels(mockup.mockupTexture.GetPixels());
             // Scale the clone to match the wanted size
-            _mockupTexture = EzSS_TextureScaler.ScaleTexture(_mockupTexture, width, height, true, FilterMode.Trilinear);
+            EzSS_TextureScaler.ScaleTexture(_mockupTexture, width, height, true, FilterMode.Trilinear);
             return _mockupTexture;
         }
 
@@ -65,7 +64,7 @@ namespace SMG.OldEzScreenshot
             Texture2D _mockupScreenTexture = new Texture2D(mockup.screenTexture.width, mockup.screenTexture.height, textureFormat, true);
             _mockupScreenTexture.SetPixels(mockup.screenTexture.GetPixels());
             // Scale the clone to match the wanted size
-            _mockupScreenTexture = EzSS_TextureScaler.ScaleTexture(_mockupScreenTexture, width, height, true, FilterMode.Trilinear);
+            EzSS_TextureScaler.ScaleTexture(_mockupScreenTexture, width, height, true, FilterMode.Trilinear);
             return _mockupScreenTexture;
         }
 
@@ -109,7 +108,7 @@ namespace SMG.OldEzScreenshot
                 {
                     _scaleUp = true;
                     _newSize = _baseSize - _newSize;
-                    _gradientTexture = EzSS_TextureScaler.ScaleTextureProportionally(_gradientTexture, _newSize, false, FilterMode.Trilinear);
+                    EzSS_TextureScaler.ScaleTextureProportionally(_gradientTexture, _newSize, false, FilterMode.Trilinear);
                 }
 
                 _gradientTexture = EzSS_TextureFilter.Convolution(_gradientTexture, EzSS_TextureFilter.LINEAR_KERNEL, shadow.softness);
@@ -126,7 +125,7 @@ namespace SMG.OldEzScreenshot
                         _newSize = (fgTexture.height - _gradientTexture.height) + (shadow.softness * 2);
                     }
                     // Scale up
-                    _gradientTexture = EzSS_TextureScaler.ScaleTextureProportionally(_gradientTexture, _newSize, false, FilterMode.Trilinear);
+                    EzSS_TextureScaler.ScaleTextureProportionally(_gradientTexture, _newSize, false, FilterMode.Trilinear);
                 }
 
                 return _gradientTexture;
@@ -221,12 +220,14 @@ namespace SMG.OldEzScreenshot
 
         public static Texture2D Transparent(int width, int height)
         {
-            Texture2D _noAlphaTexture = new Texture2D(width, height, textureFormat, true);
+            Texture2D _noAlphaTexture = new Texture2D(1, 1, textureFormat, true);
             Color[] _noAlphaPixels = _noAlphaTexture.GetPixels();
             for (int i = 0; i < _noAlphaPixels.Length; i++)
+            {
                 _noAlphaPixels[i] = Color.clear;
-
+            }
             _noAlphaTexture.SetPixels(_noAlphaPixels);
+            EzSS_TextureScaler.ScaleTexture(_noAlphaTexture, width, height, false, FilterMode.Point);
             _noAlphaTexture.Apply();
             return _noAlphaTexture;
         }

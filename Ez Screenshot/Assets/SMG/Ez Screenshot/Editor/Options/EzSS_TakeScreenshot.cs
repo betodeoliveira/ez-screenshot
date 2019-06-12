@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public class EzSS_TakeScreenshot : ScriptableObject
     {
@@ -89,7 +89,7 @@ namespace SMG.OldEzScreenshot
             GUILayout.Space(20);
             if (GUILayout.Button("Take Screenshot", "ButtonLeft", GUILayout.Height(EzSS_Style.bigBtnHeight), GUILayout.MinWidth(260), GUILayout.Height(EzSS_Style.bigBtnHeight)))
             {
-                TakeScreenshot();
+                TakeScreenshot(true);
             }
             if (GUILayout.Button("Show", "ButtonRight", GUILayout.Height(EzSS_Style.bigBtnHeight)))
             {
@@ -99,7 +99,7 @@ namespace SMG.OldEzScreenshot
             EditorGUILayout.EndHorizontal();
         }
 
-        private void TakeScreenshot()
+        public void TakeScreenshot(bool exitGUI)
         {
             // Has warnings?
             if (warningMessages.Count > 0)
@@ -135,9 +135,14 @@ namespace SMG.OldEzScreenshot
             EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.TakeScreenshot.takingScreenshot, 0);
             CreateTextures();
             Encode(textureToBeEncoded);
+            CleanTextures();
             EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.TakeScreenshot.takingScreenshot, 1);
             EditorUtility.ClearProgressBar();
-            GUIUtility.ExitGUI();
+            // Do not exit the GUI if this methos is been called from shortcut
+            if (exitGUI)
+            {
+                GUIUtility.ExitGUI();
+            }
         }
 
         private void CreateTextures()
@@ -270,6 +275,17 @@ namespace SMG.OldEzScreenshot
                 // Combines the result 
                 textureToBeEncoded = EzSS_TextureCombinator.Simple(textureToBeEncoded, _mockupScreenAndGameView, false);
             }
+        }
+
+        private void CleanTextures()
+        {
+            DestroyImmediate(gameViewTexture);
+            DestroyImmediate(transparentTexture);
+            DestroyImmediate(shadowTexture);
+            DestroyImmediate(backgroundTexture);
+            DestroyImmediate(mockupTexture);
+            DestroyImmediate(mockupScreenTexture);
+            DestroyImmediate(textureToBeEncoded);
         }
 
         private void CheckWarnings()

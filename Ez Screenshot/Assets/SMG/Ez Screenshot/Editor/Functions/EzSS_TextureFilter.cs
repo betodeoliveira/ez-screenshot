@@ -5,7 +5,7 @@
 using UnityEngine;
 using System;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public static class EzSS_TextureFilter
     {

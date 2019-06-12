@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
 	public class EzSS_AspectRatio 
 	{
@@ -27,7 +27,7 @@ namespace SMG.OldEzScreenshot
 			"9:21",
 			"10:16",
 			"13:16",
-			// Special to wider mockups
+			// Special to wide mockups
 			"16:9",
 			"16:10",
 		};

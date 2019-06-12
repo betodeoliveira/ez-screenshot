@@ -5,7 +5,7 @@ using UnityEditor;
 using System;
 using UnityEditorInternal;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     [Serializable]
     public class BgColorProperties

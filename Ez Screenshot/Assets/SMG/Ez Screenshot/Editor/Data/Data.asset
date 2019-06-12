@@ -12,59 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c0b4d56bc374b7995e83b104cd1d29, type: 3}
   m_Name: Data
   m_EditorClassIdentifier: 
-  index: 1
+  index: 0
   templates:
   - templateName: New template
     encodeSettings:
       camerasNames:
-      - Main Camera 2
-      encodeType: 0
-      jpgQuality: 0
-      namePrefix: cam_5
-      useDate: 0
-      useTime: 0
-      useMockup: 1
-      useShadow: 0
-      useBackground: 0
-      saveAtPath: /Users/albertodeoliveira/Desktop
-    resolutions:
-      screenshotAspectType: 1
-      lastScreenshotAspectType: 1
-      screenshotPortraitAspectIndex: 9
-      screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 1124
-      screenshotHeight: 2436
-      screenshotAspect: 9:19.5
-      gameViewAspectType: 1
-      lastGameViewAspectType: 1
-      gameViewPortraitAspectIndex: 9
-      gameViewLandscapeAspectIndex: 0
-      gameViewWidth: 1124
-      gameViewHeight: 2436
-      gameViewAspect: 9:19.5
-      mockupAspectType: 1
-      lastMockupAspectType: 1
-      mockupPortraitAspectIndex: 6
-      mockupLandscapeAspectIndex: 0
-      mockupWidth: 354
-      mockupHeight: 713
-      mockupResAspect: 9:16
-      aspectVector: {x: 9, y: 16}
-    mockup:
-      selectedCategory: 2
-      selectedOrientation: 0
-      selectedMockupIndex: 0
-      selectedColorIndex: 0
-    shadow:
-      color: {r: 0, g: 0, b: 0, a: 0.29411766}
-      direction: {x: -2, y: -3}
-      softness: 10
-    background:
-      bgColors: []
-      bgType: 0
-  - templateName: Testes
-    encodeSettings:
-      camerasNames:
+      - Main Camera 3 (1)
       - Main Camera 3
       encodeType: 0
       jpgQuality: 0
@@ -76,33 +29,33 @@ MonoBehaviour:
       useBackground: 0
       saveAtPath: /Users/albertodeoliveira/Desktop
     resolutions:
-      screenshotAspectType: 1
-      lastScreenshotAspectType: 1
+      screenshotAspectType: 0
+      lastScreenshotAspectType: 0
       screenshotPortraitAspectIndex: 0
       screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 500
-      screenshotHeight: 500
-      screenshotAspect: 1:1
+      screenshotWidth: 4096
+      screenshotHeight: 4096
+      screenshotAspect: Free
       gameViewAspectType: 0
       lastGameViewAspectType: 0
       gameViewPortraitAspectIndex: 0
       gameViewLandscapeAspectIndex: 0
-      gameViewWidth: 100
-      gameViewHeight: 100
+      gameViewWidth: 3000
+      gameViewHeight: 3000
       gameViewAspect: Free
       mockupAspectType: 1
       lastMockupAspectType: 1
-      mockupPortraitAspectIndex: 5
-      mockupLandscapeAspectIndex: 5
-      mockupWidth: 223
-      mockupHeight: 400
-      mockupResAspect: 4:5
+      mockupPortraitAspectIndex: 6
+      mockupLandscapeAspectIndex: 0
+      mockupWidth: 745
+      mockupHeight: 1500
+      mockupResAspect: 9:16
       aspectVector: {x: 0, y: 0}
     mockup:
-      selectedCategory: 5
+      selectedCategory: 3
       selectedOrientation: 0
       selectedMockupIndex: 0
-      selectedColorIndex: 1
+      selectedColorIndex: 0
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
       direction: {x: -2, y: -3}

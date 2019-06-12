@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
     public class EzSS_Shadow : ScriptableObject
     {

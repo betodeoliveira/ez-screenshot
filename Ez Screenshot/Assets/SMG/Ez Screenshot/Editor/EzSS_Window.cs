@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
-namespace SMG.OldEzScreenshot
+namespace SMG.EzScreenshot
 {
+    [InitializeOnLoad]
     public class EzSS_Window : EditorWindow
     {
         private Vector2 scrollPos;
@@ -20,7 +22,21 @@ namespace SMG.OldEzScreenshot
 
         private int mockupDownloadDelayCounter = 0;
 
+        private string sceneName = string.Empty;
+
         private void OnEnable()
+        {
+            Init();
+            sceneName = EditorSceneManager.GetActiveScene().name;
+            EditorApplication.update += EditorUpdate;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.update -= EditorUpdate;
+        }
+
+        private void Init()
         {
             mockupDownloadDelayCounter = 0;
             // Create instances
@@ -43,6 +59,15 @@ namespace SMG.OldEzScreenshot
             mockup.Init(encodeSettings);
             shadow.Init(encodeSettings);
             background.Init(encodeSettings);
+        }
+
+        private void EditorUpdate()
+        {
+            if (sceneName != EditorSceneManager.GetActiveScene().name)
+            {
+                sceneName = EditorSceneManager.GetActiveScene().name;
+                Init();
+            }
         }
 
         private void OnInspectorUpdate()
@@ -82,7 +107,7 @@ namespace SMG.OldEzScreenshot
         [MenuItem("Window/Ez Screenshot/Open")]
         public static void OpenWindow()
         {
-            EzSS_Window _window = (EzSS_Window)EditorWindow.GetWindow(typeof(EzSS_Window));
+            EzSS_Window _window = (EzSS_Window)GetWindow(typeof(EzSS_Window));
             _window.minSize = new Vector2(380, 650);
             _window.maxSize = new Vector2(500, 1000);
             _window.titleContent = new GUIContent(" Ez Screenshot", EditorGUIUtility.FindTexture("d_RectTransformBlueprint"));
@@ -126,6 +151,19 @@ namespace SMG.OldEzScreenshot
             Application.OpenURL("https://twitter.com/solomidgames");
         }
 
+        [MenuItem("Window/Ez Screenshot/Take Screenshot %t")]
+        public static void TakeScreenshot()
+        {
+            EzSS_Window[] _window = Resources.FindObjectsOfTypeAll<EzSS_Window>();
+            if(_window.Length > 0)
+            {
+                _window[0].takeScreenshot.TakeScreenshot(false);
+            }
+            else
+            {
+                Debug.LogWarning(FEEDBACKS.Configuration.ezScreenshotWindowMustBeOpened);
+            }
+        }
         #endregion [ Menu Items ]
     }
 }
