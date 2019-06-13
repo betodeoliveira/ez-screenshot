@@ -17,8 +17,8 @@ MonoBehaviour:
   - templateName: New template
     encodeSettings:
       camerasNames:
-      - Main Camera 3 (1)
       - Main Camera 3
+      - Main Camera 3 (1)
       encodeType: 0
       jpgQuality: 0
       namePrefix: 
@@ -33,7 +33,7 @@ MonoBehaviour:
       lastScreenshotAspectType: 0
       screenshotPortraitAspectIndex: 0
       screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 4096
+      screenshotWidth: 100
       screenshotHeight: 4096
       screenshotAspect: Free
       gameViewAspectType: 0

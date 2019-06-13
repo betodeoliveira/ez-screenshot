@@ -25,6 +25,7 @@
     {
         public const string noNeedtoOrganizeCameras = "There's no need to organize the cameras because they will be sorted based on the depth.";
         public const string mustBrowseLocation = "You must browse the location";
+        public const string ezScreenshotWindowMustBeOpened = "Ez Screenshot window must be opened to take the screenshot.";
     }
 
     public class Mockup
