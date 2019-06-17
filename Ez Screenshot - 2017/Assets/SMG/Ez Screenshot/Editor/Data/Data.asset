@@ -3,63 +3,13 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41c0b4d56bc374b7995e83b104cd1d29, type: 3}
   m_Name: Data
   m_EditorClassIdentifier: 
-  index: 0
-  templates:
-  - templateName: New template
-    encodeSettings:
-      camerasNames:
-      - Main Camera 3
-      - Main Camera 3 (1)
-      encodeType: 0
-      jpgQuality: 0
-      namePrefix: 
-      useDate: 0
-      useTime: 0
-      useMockup: 0
-      useShadow: 0
-      useBackground: 0
-      saveAtPath: /Users/albertodeoliveira/Desktop
-    resolutions:
-      screenshotAspectType: 0
-      lastScreenshotAspectType: 0
-      screenshotPortraitAspectIndex: 0
-      screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 100
-      screenshotHeight: 4096
-      screenshotAspect: Free
-      gameViewAspectType: 0
-      lastGameViewAspectType: 0
-      gameViewPortraitAspectIndex: 0
-      gameViewLandscapeAspectIndex: 0
-      gameViewWidth: 3000
-      gameViewHeight: 3000
-      gameViewAspect: Free
-      mockupAspectType: 1
-      lastMockupAspectType: 1
-      mockupPortraitAspectIndex: 6
-      mockupLandscapeAspectIndex: 0
-      mockupWidth: 745
-      mockupHeight: 1500
-      mockupResAspect: 9:16
-      aspectVector: {x: 0, y: 0}
-    mockup:
-      selectedCategory: 3
-      selectedOrientation: 0
-      selectedMockupIndex: 0
-      selectedColorIndex: 0
-    shadow:
-      color: {r: 0, g: 0, b: 0, a: 0.29411766}
-      direction: {x: -2, y: -3}
-      softness: 10
-    background:
-      bgColors: []
-      bgType: 0
+  index: -1
+  templates: []

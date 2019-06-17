@@ -77,7 +77,7 @@ namespace SMG.EzScreenshot
 			// Update new texture
 			tex.Resize(width, height);
 			tex.ReadPixels(texR,0,0,true);
-			tex.Apply(true);        //Remove this if you hate us applying textures for you :)
+			// tex.Apply(true);        //Remove this if you hate us applying textures for you :)
 		}
                
 		// Internal unility that renders the source texture into the RTT - the scaling method itself.
@@ -85,7 +85,7 @@ namespace SMG.EzScreenshot
 		{
 			//We need the source texture in VRAM because we render with it
 			src.filterMode = fmode;
-			src.Apply(true);       
+			// src.Apply(true);       
                                
 			//Using RTT for best quality and performance. Thanks, Unity 5
 			RenderTexture rtt = new RenderTexture(width, height, 32);
@@ -191,7 +191,7 @@ namespace SMG.EzScreenshot
  
 		    tex.Resize(newWidth, newHeight);
 		    tex.SetPixels(newColors);
-		    tex.Apply();
+		    // tex.Apply();
  
 		    texColors = null;
 		    newColors = null;

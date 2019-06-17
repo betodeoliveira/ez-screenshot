@@ -137,7 +137,7 @@ namespace SMG.EzScreenshot
                     }
                 }
             }
-            result.Apply();
+            // result.Apply();
             return result;
         }
     }

@@ -36,7 +36,7 @@ namespace SMG.EzScreenshot
 
         public override void SetMockupsAspects()
         {
-            mockup.mockupsAspects.Add("apple-ipadPro", "4:3");
+            mockup.mockupsAspects.Add("apple-ipadPro", "3:4");
         }
 
         public override void SetMockupsScreenSizes()

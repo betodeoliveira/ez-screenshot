@@ -45,7 +45,7 @@ namespace SMG.EzScreenshot
             cam.targetTexture = _renderTexture;
             cam.Render();
             source.ReadPixels(new Rect(0, 0, source.width, source.height), 0, 0, true);
-            source.Apply();
+            // source.Apply();
             cam.targetTexture = null;
             RenderTexture.active = null;
         }
@@ -53,7 +53,7 @@ namespace SMG.EzScreenshot
         public static Texture2D Mockup(EzSS_Mockup mockup, int width, int height)
         {
             Texture2D _mockupTexture = new Texture2D(mockup.mockupTexture.width, mockup.mockupTexture.height, textureFormat, true);
-            _mockupTexture.SetPixels(mockup.mockupTexture.GetPixels());
+            Graphics.CopyTexture(mockup.mockupTexture, _mockupTexture);
             // Scale the clone to match the wanted size
             EzSS_TextureScaler.ScaleTexture(_mockupTexture, width, height, true, FilterMode.Trilinear);
             return _mockupTexture;
@@ -62,7 +62,7 @@ namespace SMG.EzScreenshot
         public static Texture2D MockupScreen(EzSS_Mockup mockup, int width, int height)
         {
             Texture2D _mockupScreenTexture = new Texture2D(mockup.screenTexture.width, mockup.screenTexture.height, textureFormat, true);
-            _mockupScreenTexture.SetPixels(mockup.screenTexture.GetPixels());
+            Graphics.CopyTexture(mockup.screenTexture, _mockupScreenTexture);
             // Scale the clone to match the wanted size
             EzSS_TextureScaler.ScaleTexture(_mockupScreenTexture, width, height, true, FilterMode.Trilinear);
             return _mockupScreenTexture;
@@ -87,7 +87,7 @@ namespace SMG.EzScreenshot
                     }
                 }
             }
-            _shadowTexture.Apply();
+            // _shadowTexture.Apply();
             // Applys the blur
             if (shadow.softness > 0)
             {
@@ -228,7 +228,7 @@ namespace SMG.EzScreenshot
             }
             _noAlphaTexture.SetPixels(_noAlphaPixels);
             EzSS_TextureScaler.ScaleTexture(_noAlphaTexture, width, height, false, FilterMode.Point);
-            _noAlphaTexture.Apply();
+            // _noAlphaTexture.Apply();
             return _noAlphaTexture;
         }
     }

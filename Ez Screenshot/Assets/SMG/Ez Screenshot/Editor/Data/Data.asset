@@ -24,16 +24,16 @@ MonoBehaviour:
       namePrefix: 
       useDate: 0
       useTime: 0
-      useMockup: 0
-      useShadow: 0
-      useBackground: 0
+      useMockup: 1
+      useShadow: 1
+      useBackground: 1
       saveAtPath: /Users/albertodeoliveira/Desktop
     resolutions:
       screenshotAspectType: 0
       lastScreenshotAspectType: 0
       screenshotPortraitAspectIndex: 0
       screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 100
+      screenshotWidth: 4096
       screenshotHeight: 4096
       screenshotAspect: Free
       gameViewAspectType: 0
@@ -43,16 +43,16 @@ MonoBehaviour:
       gameViewWidth: 3000
       gameViewHeight: 3000
       gameViewAspect: Free
-      mockupAspectType: 1
-      lastMockupAspectType: 1
-      mockupPortraitAspectIndex: 6
-      mockupLandscapeAspectIndex: 0
-      mockupWidth: 745
-      mockupHeight: 1500
-      mockupResAspect: 9:16
-      aspectVector: {x: 0, y: 0}
+      mockupAspectType: 2
+      lastMockupAspectType: 2
+      mockupPortraitAspectIndex: 2
+      mockupLandscapeAspectIndex: 1
+      mockupWidth: 3591
+      mockupHeight: 2744
+      mockupResAspect: 4:3
+      aspectVector: {x: 4, y: 3}
     mockup:
-      selectedCategory: 3
+      selectedCategory: 4
       selectedOrientation: 0
       selectedMockupIndex: 0
       selectedColorIndex: 0
@@ -61,5 +61,9 @@ MonoBehaviour:
       direction: {x: -2, y: -3}
       softness: 10
     background:
-      bgColors: []
-      bgType: 0
+      bgColors:
+      - color: {r: 1, g: 0.6084906, b: 0.6084906, a: 1}
+        time: 0
+      - color: {r: 1, g: 0.6367924, b: 0.9371279, a: 1}
+        time: 1
+      bgType: 3
