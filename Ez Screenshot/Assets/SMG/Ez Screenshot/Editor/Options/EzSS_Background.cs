@@ -19,10 +19,11 @@ namespace SMG.EzScreenshot
     {
         // General
         private EzSS_EncodeSettings encodeSettings;
-        private SerializedProperty property;
         private bool showBackground = true;
         // Reorderable List
+        private UnityEngine.Object target;
         SerializedObject serializedObject;
+        private SerializedProperty serializedProperty;
         private ReorderableList bgColorsReList;
         public List<BgColorProperties> bgColors = new List<BgColorProperties>();
         // Mixing Type
@@ -62,7 +63,10 @@ namespace SMG.EzScreenshot
                 EditorGUI.PropertyField(new Rect(rect.width - 100, rect.y, 135, rect.height), bgColorsReList.serializedProperty.GetArrayElementAtIndex(index).FindPropertyRelative("time"), _content);
                 // Update
                 updatePreview = true;
-                serializedObject.ApplyModifiedProperties();
+                if (serializedObject.targetObject != null)
+                {
+                    serializedObject.ApplyModifiedProperties();
+                }
             };
             // Add
             bgColorsReList.onAddCallback = (ReorderableList list) =>

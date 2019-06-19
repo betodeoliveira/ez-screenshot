@@ -17,10 +17,9 @@ MonoBehaviour:
   - templateName: New template
     encodeSettings:
       camerasNames:
-      - Main Camera 3
-      - Main Camera 3 (1)
+      - Main Camera
       encodeType: 0
-      jpgQuality: 0
+      jpgQuality: 1
       namePrefix: 
       useDate: 0
       useTime: 0
@@ -29,32 +28,32 @@ MonoBehaviour:
       useBackground: 1
       saveAtPath: /Users/albertodeoliveira/Desktop
     resolutions:
-      screenshotAspectType: 0
-      lastScreenshotAspectType: 0
+      screenshotAspectType: 1
+      lastScreenshotAspectType: 1
       screenshotPortraitAspectIndex: 0
       screenshotLandscapeAspectIndex: 0
-      screenshotWidth: 4096
-      screenshotHeight: 4096
-      screenshotAspect: Free
+      screenshotWidth: 1500
+      screenshotHeight: 1500
+      screenshotAspect: 1:1
       gameViewAspectType: 0
       lastGameViewAspectType: 0
       gameViewPortraitAspectIndex: 0
       gameViewLandscapeAspectIndex: 0
-      gameViewWidth: 3000
-      gameViewHeight: 3000
+      gameViewWidth: 992
+      gameViewHeight: 1034
       gameViewAspect: Free
-      mockupAspectType: 2
-      lastMockupAspectType: 2
-      mockupPortraitAspectIndex: 2
+      mockupAspectType: 1
+      lastMockupAspectType: 1
+      mockupPortraitAspectIndex: 9
       mockupLandscapeAspectIndex: 1
-      mockupWidth: 3591
-      mockupHeight: 2744
-      mockupResAspect: 4:3
-      aspectVector: {x: 4, y: 3}
+      mockupWidth: 499
+      mockupHeight: 1000
+      mockupResAspect: 9:19.5
+      aspectVector: {x: 18, y: 39}
     mockup:
-      selectedCategory: 4
+      selectedCategory: 3
       selectedOrientation: 0
-      selectedMockupIndex: 0
+      selectedMockupIndex: 1
       selectedColorIndex: 0
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
@@ -66,4 +65,6 @@ MonoBehaviour:
         time: 0
       - color: {r: 1, g: 0.6367924, b: 0.9371279, a: 1}
         time: 1
+      - color: {r: 0.9433962, g: 0.20914915, b: 0.20914915, a: 1}
+        time: 0
       bgType: 3
