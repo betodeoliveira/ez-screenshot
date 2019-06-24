@@ -51,7 +51,10 @@ namespace SMG.EzScreenshot
                 rect.height = EditorGUIUtility.singleLineHeight;
                 GUIContent _content = new GUIContent(string.Format("Camera {0}", index));
                 EditorGUI.PropertyField(rect, camerasReList.serializedProperty.GetArrayElementAtIndex(index), _content);
-                serializedObject.ApplyModifiedProperties();
+                if (serializedObject.targetObject != null)
+                {
+                    serializedObject.ApplyModifiedProperties();
+                }
             };
 
             camerasReList.onAddCallback = (ReorderableList list) =>
@@ -60,7 +63,7 @@ namespace SMG.EzScreenshot
             };
 
             camerasReList.onRemoveCallback = (ReorderableList list) =>
-            { 
+            {
                 cameras.RemoveAt(camerasReList.index);
             };
         }

@@ -23,6 +23,7 @@ namespace SMG.EzScreenshot
         private int mockupDownloadDelayCounter = 0;
 
         private string sceneName = string.Empty;
+        private bool onPlayMode = false;
 
         private void OnEnable()
         {
@@ -66,6 +67,15 @@ namespace SMG.EzScreenshot
             if (sceneName != EditorSceneManager.GetActiveScene().name)
             {
                 sceneName = EditorSceneManager.GetActiveScene().name;
+                Init();
+            }
+            if(EditorApplication.isPlaying && !onPlayMode)
+            {
+                onPlayMode = true;
+            }
+            if(!EditorApplication.isPlaying && onPlayMode)
+            {
+                onPlayMode = false;
                 Init();
             }
         }

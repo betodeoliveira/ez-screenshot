@@ -202,7 +202,10 @@ namespace SMG.EzScreenshot
             data.index = index;
             // To complete the save object must be set dirty
             EditorUtility.SetDirty(data);
-            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            if (!EditorApplication.isPlaying)
+            {
+                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            }
         }
     }
 }
