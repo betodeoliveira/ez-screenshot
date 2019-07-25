@@ -45,6 +45,7 @@ namespace SMG.EzScreenshot
         public EzSS_Mockup.Orientations selectedOrientation;
         public int selectedMockupIndex;
         public int selectedColorIndex;
+        public Vector2 mockupOffset;
     }
 
     [Serializable]

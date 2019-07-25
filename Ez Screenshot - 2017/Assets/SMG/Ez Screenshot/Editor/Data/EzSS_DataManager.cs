@@ -122,6 +122,7 @@ namespace SMG.EzScreenshot
                 mockup.selectedOrientation = data.templates[index].mockup.selectedOrientation;
                 mockup.selectedMockupIndex = data.templates[index].mockup.selectedMockupIndex;
                 mockup.selectedColorIndex = data.templates[index].mockup.selectedColorIndex;
+                mockup.mockupOffset = data.templates[index].mockup.mockupOffset;
             }
             // Shadow
             if (encodeSettings.useShadow)
@@ -191,6 +192,7 @@ namespace SMG.EzScreenshot
             data.templates[index].mockup.selectedOrientation = mockup.selectedOrientation;
             data.templates[index].mockup.selectedMockupIndex = mockup.selectedMockupIndex;
             data.templates[index].mockup.selectedColorIndex = mockup.selectedColorIndex;
+            data.templates[index].mockup.mockupOffset = mockup.mockupOffset;
             // Shadow
             data.templates[index].shadow.color = shadow.color;
             data.templates[index].shadow.direction = shadow.direction;

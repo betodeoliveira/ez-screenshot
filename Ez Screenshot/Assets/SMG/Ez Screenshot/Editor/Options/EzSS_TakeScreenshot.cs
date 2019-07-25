@@ -143,12 +143,13 @@ namespace SMG.EzScreenshot
 
         private IEnumerator CreateTextures(bool exitGUI)
         {
-            yield return null;
+            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+            yield return new WaitForEndOfFrame();
             // Gameview
             if (!encodeSettings.useBackground && !encodeSettings.useMockup && !encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
                 // Creates the transparent texture
                 transparentTexture = EzSS_TextureCreator.Transparent(resolutions.screenshotWidth, resolutions.screenshotHeight);
                 // Combine transparent and gameview
@@ -158,7 +159,7 @@ namespace SMG.EzScreenshot
             else if (!encodeSettings.useBackground && !encodeSettings.useMockup && encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
                 // Creates the shadow texture
                 shadowTexture = EzSS_TextureCreator.Shadow(shadow, gameViewTexture);
                 // Creates the transparent texture based on the screenshot size
@@ -172,7 +173,7 @@ namespace SMG.EzScreenshot
             else if (encodeSettings.useBackground && !encodeSettings.useMockup && !encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
                 // Creates the background texture
                 backgroundTexture = EzSS_TextureCreator.Background(background, resolutions.screenshotWidth, resolutions.screenshotHeight);
                 // Combine background and gameView
@@ -182,7 +183,7 @@ namespace SMG.EzScreenshot
             else if (encodeSettings.useBackground && !encodeSettings.useMockup && encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.gameViewWidth, resolutions.gameViewHeight);
                 // Creates the shadow texture
                 shadowTexture = EzSS_TextureCreator.Shadow(shadow, gameViewTexture);
                 // Creates the background texture
@@ -196,7 +197,7 @@ namespace SMG.EzScreenshot
             else if (!encodeSettings.useBackground && encodeSettings.useMockup && !encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.mockupScreenWidth, resolutions.mockupScreenHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.mockupScreenWidth, resolutions.mockupScreenHeight);
                 // Creates the mockup texture
                 mockupTexture = EzSS_TextureCreator.Mockup(mockup, resolutions.mockupWidth, resolutions.mockupHeight);
                 // Creates the mockup screen texture
@@ -214,7 +215,7 @@ namespace SMG.EzScreenshot
             else if (encodeSettings.useBackground && encodeSettings.useMockup && !encodeSettings.useShadow)
             {
                 // Creates the gameView texture
-                // gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.mockupScreenWidth, resolutions.mockupScreenHeight);
+                gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.mockupScreenWidth, resolutions.mockupScreenHeight);
                 // Creates the mockup texture
                 mockupTexture = EzSS_TextureCreator.Mockup(mockup, resolutions.mockupWidth, resolutions.mockupHeight);
                 // Creates the mockup screen texture
@@ -253,7 +254,6 @@ namespace SMG.EzScreenshot
             // Mockup + Background + Shadow
             else if (encodeSettings.useBackground && encodeSettings.useMockup && encodeSettings.useShadow)
             {
-                yield return new WaitForEndOfFrame();
                 // Creates the gameView texture
                 gameViewTexture = EzSS_TextureCreator.GameView(encodeSettings, resolutions.mockupScreenWidth, resolutions.mockupScreenHeight);
                 // Creates the mockup texture
@@ -295,15 +295,22 @@ namespace SMG.EzScreenshot
         private void CheckWarnings()
         {
             warningMessages.Clear();
-            // Check if the list has at least one comera
             bool _allNull = true;
-            for (int i = 0; i < encodeSettings.cameras.Count; i++)
+            // Check if the list has at least one comera
+            if (encodeSettings.setCamerasManually)
             {
-                if (encodeSettings.cameras[i] != null)
+                for (int i = 0; i < encodeSettings.cameras.Count; i++)
                 {
-                    _allNull = false;
-                    break;
+                    if (encodeSettings.cameras[i] != null)
+                    {
+                        _allNull = false;
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                _allNull = false;
             }
             if (_allNull)
             {

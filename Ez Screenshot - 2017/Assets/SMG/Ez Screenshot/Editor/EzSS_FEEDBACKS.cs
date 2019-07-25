@@ -26,6 +26,8 @@
         public const string noNeedtoOrganizeCameras = "There's no need to organize the cameras because they will be sorted based on the depth.";
         public const string mustBrowseLocation = "You must browse the location";
         public const string ezScreenshotWindowMustBeOpened = "Ez Screenshot window must be opened to take the screenshot.";
+        public const string screenCaptureWarning = "BETA! The screenshot will be capture using ScreenCapture. Dont't worry if you receive warnings and errors messages after taking the screenshot, because it's a Unity bug related to the ScreenCapture method.";
+        public const string screenSpaceOverlayWarning = "Setting the cameras manually prevent the elements that are inside a Screen Spave - Overlay canvas to appear on the screenshot.";
     }
 
     public class Mockup

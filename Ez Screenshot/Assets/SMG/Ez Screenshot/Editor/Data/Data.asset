@@ -18,7 +18,6 @@ MonoBehaviour:
     encodeSettings:
       camerasNames:
       - Main Camera
-      - Camera UI
       encodeType: 0
       jpgQuality: 1
       namePrefix: 
@@ -36,26 +35,26 @@ MonoBehaviour:
       screenshotWidth: 1500
       screenshotHeight: 1500
       screenshotAspect: 1:1
-      gameViewAspectType: 0
-      lastGameViewAspectType: 0
+      gameViewAspectType: 2
+      lastGameViewAspectType: 2
       gameViewPortraitAspectIndex: 0
-      gameViewLandscapeAspectIndex: 0
-      gameViewWidth: 992
-      gameViewHeight: 1034
-      gameViewAspect: Free
+      gameViewLandscapeAspectIndex: 10
+      gameViewWidth: 1300
+      gameViewHeight: 602
+      gameViewAspect: 19.5:9
       mockupAspectType: 1
       lastMockupAspectType: 1
       mockupPortraitAspectIndex: 9
       mockupLandscapeAspectIndex: 10
-      mockupWidth: 497
+      mockupWidth: 462
       mockupHeight: 1000
       mockupResAspect: 9:19.5
       aspectVector: {x: 18, y: 39}
     mockup:
       selectedCategory: 3
       selectedOrientation: 0
-      selectedMockupIndex: 2
-      selectedColorIndex: 2
+      selectedMockupIndex: 0
+      selectedColorIndex: 0
       mockupOffset: {x: 0, y: 0}
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}

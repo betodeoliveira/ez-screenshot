@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Networking;
+using System;
 
 namespace SMG.EzScreenshot
 {
@@ -74,7 +75,11 @@ namespace SMG.EzScreenshot
         private string lastColorName;
         private string lastOrientationName;
         // Download manager
-        private UnityWebRequest webRequest;
+        #if UNITY_2017
+        WWW wwwRequest;
+        #else
+        UnityWebRequest webRequest;
+        #endif
         private string mockupTextureURL;
         private string screenTextureURL;
         public bool editorUpdateIsRunning = false;
@@ -270,12 +275,86 @@ namespace SMG.EzScreenshot
             }
         }
 
+#if UNITY_2017
         private void EditorUpdate()
         {
             if (downloadScreenTexture && !isDownloadingScreenTexture)
             {
                 isDownloadingScreenTexture = true;
-                // webRequest = new UnityWebRequest();
+                wwwRequest = new WWW(screenTextureURL);
+            }
+            else if (screenTexture != null && downloadMockupTexture && !isDownloadingMockupTexture)
+            {
+                isDownloadingMockupTexture = true;
+                wwwRequest = new WWW(mockupTextureURL);
+            }
+            
+            if (isDownloadingMockupTexture || isDownloadingScreenTexture)
+            {
+                // Wait until is done
+                if (!wwwRequest.isDone)
+                {
+                    if (isDownloadingMockupTexture)
+                    {
+                        EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockTexture, wwwRequest.progress);
+                    }
+                    else if (isDownloadingScreenTexture)
+                    {
+                        EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockupScreen, wwwRequest.progress);
+                    }
+                    return;
+                }
+                // Check for erros
+                if (!string.IsNullOrEmpty(wwwRequest.error))
+                {
+                    if (isDownloadingMockupTexture)
+                    {
+                        EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupTexture + wwwRequest.error, FEEDBACKS.Buttons.close);
+                    }
+                    else if (isDownloadingScreenTexture)
+                    {
+                        EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupScreen + wwwRequest.error, FEEDBACKS.Buttons.close);
+                    }
+                    encodeSettings.useMockup = false;
+                    FinishEditorUpdate();
+                }
+                else
+                {
+                    if (downloadMockupTexture && isDownloadingMockupTexture)
+                    {
+                        isDownloadingMockupTexture = false;
+                        downloadMockupTexture = false;
+                        mockupTexture = new Texture2D(wwwRequest.texture.width, wwwRequest.texture.height, TextureFormat.ARGB32, false);
+                        mockupTexture.SetPixels(wwwRequest.texture.GetPixels());
+                        mockupTexture.Apply();
+                        mockupsTexturesKeys.Add(mockupTextureURL);
+                        mockupsTextures.Add(mockupTexture);
+                    }
+                    else if (downloadScreenTexture && isDownloadingScreenTexture)
+                    {
+                        isDownloadingScreenTexture = false;
+                        downloadScreenTexture = false;
+                        screenTexture = new Texture2D(wwwRequest.texture.width, wwwRequest.texture.height, TextureFormat.ARGB32, false);
+                        screenTexture.SetPixels(wwwRequest.texture.GetPixels());
+                        screenTexture.Apply();
+                        screensTexturesKeys.Add(screenTextureURL);
+                        screensTextures.Add(screenTexture);
+                    }
+                }
+            }
+
+            // Finish if there's nothing more to download
+            if (mockupTexture != null && screenTexture != null)
+            {
+                FinishEditorUpdate();
+            }
+        }
+#else
+        private void EditorUpdate()
+        {
+            if (downloadScreenTexture && !isDownloadingScreenTexture)
+            {
+                isDownloadingScreenTexture = true;
                 webRequest = UnityWebRequestTexture.GetTexture(screenTextureURL);
                 // Starts the web request
                 webRequest.SendWebRequest();
@@ -283,7 +362,6 @@ namespace SMG.EzScreenshot
             else if (screenTexture != null && downloadMockupTexture && !isDownloadingMockupTexture)
             {
                 isDownloadingMockupTexture = true;
-                // webRequest = new UnityWebRequest();
                 webRequest = UnityWebRequestTexture.GetTexture(mockupTextureURL);
                 // Starts the web request
                 webRequest.SendWebRequest();
@@ -346,6 +424,7 @@ namespace SMG.EzScreenshot
                 FinishEditorUpdate();
             }
         }
+#endif
 
         private void FinishEditorUpdate()
         {

@@ -15,42 +15,51 @@ namespace SMG.EzScreenshot
             // Creates three temp textures that will be the base to create the final texture
             Texture2D _result = new Texture2D(width, height, textureFormat, true);
 
-            if (!configuration.setCamerasManually)
+            // if (!configuration.setCamerasManually)
+            // {
+            //     SetRenderTexture(Camera.main, _result);
+            // int _widthDifference = 0;
+            // if(width < height)
+            // {
+            //     _widthDifference = width / Screen.width;
+            // }
+            // else
+            // {
+            //     _widthDifference = height / Screen.height;
+            // }
+            // // Width cannot be smaller or equals to 1
+            // if (_widthDifference <= 1)
+            // {
+            //     _widthDifference = 2;
+            // }
+            // _result = ScreenCapture.CaptureScreenshotAsTexture(_widthDifference);
+            // EzSS_TextureScaler.ScaleTexture(_result, width, height, false, FilterMode.Trilinear);
+            // }
+            // else
+            // {
+            Texture2D _foregroundTexture = new Texture2D(width, height, textureFormat, true);
+            // Creates an array with the cameras list
+            Camera[] _cameras = configuration.cameras.ToArray();
+            // Sort the array based on the depth of each camera
+            Array.Sort(_cameras, delegate (Camera camera0, Camera camera1)
             {
-                int _widthDifference = width / Screen.width;
-                // Width cannot be smaller or equals to 1
-                if (_widthDifference <= 1)
+                return EditorUtility.NaturalCompare(camera0.depth.ToString(), camera1.depth.ToString());
+            });
+            // Combines the render texture of each camera in just one texture
+            for (int i = 0; i < _cameras.Length; i++)
+            {
+                if (i == 0)
                 {
-                    _widthDifference = 2;
+                    SetRenderTexture(_cameras[i], _result);
                 }
-                _result = ScreenCapture.CaptureScreenshotAsTexture(_widthDifference);
-                EzSS_TextureScaler.ScaleTexture(_result, width, height, false, FilterMode.Trilinear);
-            }
-            else
-            {
-                Texture2D _foregroundTexture = new Texture2D(width, height, textureFormat, true);
-                // Creates an array with the cameras list
-                Camera[] _cameras = configuration.cameras.ToArray();
-                // Sort the array based on the depth of each camera
-                Array.Sort(_cameras, delegate (Camera camera0, Camera camera1)
-                {
-                    return EditorUtility.NaturalCompare(camera0.depth.ToString(), camera1.depth.ToString());
-                });
-                // Combines the render texture of each camera in just one texture
-                for (int i = 0; i < _cameras.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        SetRenderTexture(_cameras[i], _result);
-                    }
 
-                    else
-                    {
-                        SetRenderTexture(_cameras[i], _foregroundTexture);
-                        _result = EzSS_TextureCombinator.Simple(_result, _foregroundTexture, true);
-                    }
+                else
+                {
+                    SetRenderTexture(_cameras[i], _foregroundTexture);
+                    _result = EzSS_TextureCombinator.Simple(_result, _foregroundTexture, true);
                 }
             }
+            // }
 
             return _result;
         }
@@ -69,7 +78,12 @@ namespace SMG.EzScreenshot
         public static Texture2D Mockup(EzSS_Mockup mockup, int width, int height)
         {
             Texture2D _mockupTexture = new Texture2D(mockup.mockupTexture.width, mockup.mockupTexture.height, textureFormat, false);
+#if UNITY_2017
+            _mockupTexture.SetPixels(mockup.mockupTexture.GetPixels());
+            _mockupTexture.Apply();
+#else
             Graphics.CopyTexture(mockup.mockupTexture, _mockupTexture);
+#endif
             // Scale the clone to match the wanted size
             EzSS_TextureScaler.ScaleTexture(_mockupTexture, width, height, true, FilterMode.Trilinear);
             return _mockupTexture;
@@ -77,11 +91,16 @@ namespace SMG.EzScreenshot
 
         public static Texture2D MockupScreen(EzSS_Mockup mockup, int width, int height)
         {
-            Texture2D _mockupScreenTexture = new Texture2D(mockup.screenTexture.width, mockup.screenTexture.height, textureFormat, false);
-            Graphics.CopyTexture(mockup.screenTexture, _mockupScreenTexture);
+            Texture2D _screenTexture = new Texture2D(mockup.screenTexture.width, mockup.screenTexture.height, textureFormat, false);
+#if UNITY_2017
+        _screenTexture.SetPixels(mockup.screenTexture.GetPixels());
+        _screenTexture.Apply();
+#else
+        Graphics.CopyTexture(mockup.screenTexture, _screenTexture);
+#endif
             // Scale the clone to match the wanted size
-            EzSS_TextureScaler.ScaleTexture(_mockupScreenTexture, width, height, true, FilterMode.Trilinear);
-            return _mockupScreenTexture;
+            EzSS_TextureScaler.ScaleTexture(_screenTexture, width, height, true, FilterMode.Trilinear);
+            return _screenTexture;
         }
 
         public static Texture2D Shadow(EzSS_Shadow shadow, Texture2D fgTexture)

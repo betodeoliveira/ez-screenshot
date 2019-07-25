@@ -28,6 +28,8 @@ namespace SMG.EzScreenshot
         // Warning
         private List<string> warningMessages = new List<string>();
 
+        public bool takingScreenshot = false;
+
         public void Init(EzSS_EncodeSettings encodeSettings, EzSS_Resolutions resolutions, EzSS_Mockup mockup, EzSS_Shadow shadow, EzSS_Background background)
         {
             this.encodeSettings = encodeSettings;
@@ -87,10 +89,12 @@ namespace SMG.EzScreenshot
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(20);
+            EditorGUI.BeginDisabledGroup(mockup.editorUpdateIsRunning);
             if (GUILayout.Button("Take Screenshot", "ButtonLeft", GUILayout.Height(EzSS_Style.bigBtnHeight), GUILayout.MinWidth(260), GUILayout.Height(EzSS_Style.bigBtnHeight)))
             {
                 TakeScreenshot(true);
             }
+            EditorGUI.EndDisabledGroup();
             if (GUILayout.Button("Show", "ButtonRight", GUILayout.Height(EzSS_Style.bigBtnHeight)))
             {
                 Application.OpenURL("file://" + encodeSettings.saveAtPath);
@@ -133,20 +137,14 @@ namespace SMG.EzScreenshot
             textureToBeEncoded = null;
 
             EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.TakeScreenshot.takingScreenshot, 0);
-            CreateTextures();
-            Encode(textureToBeEncoded);
-            CleanTextures();
-            EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.TakeScreenshot.takingScreenshot, 1);
-            EditorUtility.ClearProgressBar();
-            // Do not exit the GUI if this methos is been called from shortcut
-            if (exitGUI)
-            {
-                GUIUtility.ExitGUI();
-            }
+            takingScreenshot = true;
+            EditorCoroutine.start(CreateTextures(exitGUI));
         }
 
-        private void CreateTextures()
+        private IEnumerator CreateTextures(bool exitGUI)
         {
+            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+            yield return new WaitForEndOfFrame();
             // Gameview
             if (!encodeSettings.useBackground && !encodeSettings.useMockup && !encodeSettings.useShadow)
             {
@@ -211,7 +209,7 @@ namespace SMG.EzScreenshot
                 // Combines _mockupScreenAndGameView and mockup
                 textureToBeEncoded = EzSS_TextureCombinator.MockupAndMockupScreen(_mockupScreenAndGameView, mockupTexture);
                 // Final image
-                textureToBeEncoded = EzSS_TextureCombinator.Simple(transparentTexture, textureToBeEncoded, false);
+                textureToBeEncoded = EzSS_TextureCombinator.Simple(transparentTexture, textureToBeEncoded, false, mockup.mockupOffset);
             }
             // Mockup + Background
             else if (encodeSettings.useBackground && encodeSettings.useMockup && !encodeSettings.useShadow)
@@ -229,7 +227,7 @@ namespace SMG.EzScreenshot
                 // Combines _mockupScreenAndGameView and mockup
                 textureToBeEncoded = EzSS_TextureCombinator.MockupAndMockupScreen(_mockupScreenAndGameView, mockupTexture);
                 // Final image
-                textureToBeEncoded = EzSS_TextureCombinator.Simple(backgroundTexture, textureToBeEncoded, false);
+                textureToBeEncoded = EzSS_TextureCombinator.Simple(backgroundTexture, textureToBeEncoded, false, mockup.mockupOffset);
             }
             // Mockup + Shadow
             else if (!encodeSettings.useBackground && encodeSettings.useMockup && encodeSettings.useShadow)
@@ -249,9 +247,9 @@ namespace SMG.EzScreenshot
                 // Creates the transparent texture
                 transparentTexture = EzSS_TextureCreator.Transparent(resolutions.screenshotWidth, resolutions.screenshotHeight);
                 // Combines the transparent and shadow
-                textureToBeEncoded = EzSS_TextureCombinator.Shadow(transparentTexture, shadowTexture, shadow);
+                textureToBeEncoded = EzSS_TextureCombinator.Shadow(transparentTexture, shadowTexture, shadow, mockup.mockupOffset);
                 // Combines the result 
-                textureToBeEncoded = EzSS_TextureCombinator.Simple(textureToBeEncoded, _mockupScreenAndGameView, false);
+                textureToBeEncoded = EzSS_TextureCombinator.Simple(textureToBeEncoded, _mockupScreenAndGameView, false, mockup.mockupOffset);
             }
             // Mockup + Background + Shadow
             else if (encodeSettings.useBackground && encodeSettings.useMockup && encodeSettings.useShadow)
@@ -271,10 +269,16 @@ namespace SMG.EzScreenshot
                 // Creates the background texture
                 backgroundTexture = EzSS_TextureCreator.Background(background, resolutions.screenshotWidth, resolutions.screenshotHeight);
                 // Combines the background and shadow
-                textureToBeEncoded = EzSS_TextureCombinator.Shadow(backgroundTexture, shadowTexture, shadow);
+                textureToBeEncoded = EzSS_TextureCombinator.Shadow(backgroundTexture, shadowTexture, shadow, mockup.mockupOffset);
                 // Combines the result 
-                textureToBeEncoded = EzSS_TextureCombinator.Simple(textureToBeEncoded, _mockupScreenAndGameView, false);
+                textureToBeEncoded = EzSS_TextureCombinator.Simple(textureToBeEncoded, _mockupScreenAndGameView, false, mockup.mockupOffset);
             }
+
+            Encode(textureToBeEncoded);
+            takingScreenshot = false;
+            CleanTextures();
+            EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.TakeScreenshot.takingScreenshot, 1);
+            EditorUtility.ClearProgressBar();
         }
 
         private void CleanTextures()
@@ -291,15 +295,22 @@ namespace SMG.EzScreenshot
         private void CheckWarnings()
         {
             warningMessages.Clear();
-            // Check if the list has at least one comera
             bool _allNull = true;
-            for (int i = 0; i < encodeSettings.cameras.Count; i++)
+            // Check if the list has at least one comera
+            if (encodeSettings.setCamerasManually)
             {
-                if (encodeSettings.cameras[i] != null)
+                for (int i = 0; i < encodeSettings.cameras.Count; i++)
                 {
-                    _allNull = false;
-                    break;
+                    if (encodeSettings.cameras[i] != null)
+                    {
+                        _allNull = false;
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                _allNull = false;
             }
             if (_allNull)
             {

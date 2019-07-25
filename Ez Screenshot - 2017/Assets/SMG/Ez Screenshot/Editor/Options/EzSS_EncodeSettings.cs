@@ -17,6 +17,7 @@ namespace SMG.EzScreenshot
         SerializedProperty element;
         public ReorderableList camerasReList;
         public List<Camera> cameras = new List<Camera>();
+        public bool setCamerasManually = true;
         // Encode
         public enum EncodeType
         {
@@ -77,6 +78,7 @@ namespace SMG.EzScreenshot
             EditorGUILayout.EndHorizontal();
             if (showConfiguration)
             {
+                // TakeWithScreenCapture();   
                 // To do the list indentation spaces are needed on the start and on end
                 DrawCameraConfig();
                 EditorGUI.indentLevel++;
@@ -89,20 +91,38 @@ namespace SMG.EzScreenshot
             }
         }
 
+        private void TakeWithScreenCapture()
+        {
+            EditorGUI.indentLevel++;
+            setCamerasManually = EditorGUILayout.Toggle("Set Cameras Manually:", setCamerasManually);
+            if (!setCamerasManually)
+            {
+                EditorGUILayout.HelpBox(FEEDBACKS.Configuration.screenCaptureWarning, MessageType.None);
+            }
+            else
+            {
+                EditorGUILayout.HelpBox(FEEDBACKS.Configuration.screenSpaceOverlayWarning, MessageType.None);
+            }
+            EditorGUI.indentLevel--;
+        }
+
         private void DrawCameraConfig()
         {
-            if (camerasReList == null || camerasReList.count != cameras.Count)
+            if (setCamerasManually)
             {
-                UpdateCamerasReList();
+                if (camerasReList == null || camerasReList.count != cameras.Count)
+                {
+                    UpdateCamerasReList();
+                }
+                // Draw the list with spaces on start and on end 
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                EditorGUILayout.BeginVertical();
+                camerasReList.DoLayoutList();
+                EditorGUILayout.EndVertical();
+                GUILayout.Space(5);
+                EditorGUILayout.EndHorizontal();
             }
-            // Draw the list with spaces on start and on end 
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Space(20);
-            EditorGUILayout.BeginVertical();
-            camerasReList.DoLayoutList();
-            EditorGUILayout.EndVertical();
-            GUILayout.Space(5);
-            EditorGUILayout.EndHorizontal();
         }
 
         private static string GetGameObjectPath(GameObject obj)
