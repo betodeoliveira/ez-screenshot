@@ -20,8 +20,6 @@ namespace SMG.EzScreenshot
         private EzSS_TakeScreenshot takeScreenshot;
         private EzSS_DataManager dataManager;
 
-        private int mockupDownloadDelayCounter = 0;
-
         private string sceneName = string.Empty;
         private bool onPlayMode = false;
 
@@ -39,7 +37,6 @@ namespace SMG.EzScreenshot
 
         private void Init()
         {
-            mockupDownloadDelayCounter = 0;
             // Create instances
             dataManager = ScriptableObject.CreateInstance<EzSS_DataManager>();
             template = ScriptableObject.CreateInstance<EzSS_Template>();
@@ -57,7 +54,7 @@ namespace SMG.EzScreenshot
             template.Init(dataManager);
             resolutions.Init(encodeSettings, mockup);
             takeScreenshot.Init(encodeSettings, resolutions, mockup, shadow, background);
-            mockup.Init(encodeSettings);
+            mockup.Init(encodeSettings, resolutions);
             shadow.Init(encodeSettings);
             background.Init(encodeSettings);
         }
@@ -69,22 +66,19 @@ namespace SMG.EzScreenshot
                 sceneName = EditorSceneManager.GetActiveScene().name;
                 Init();
             }
-            if(EditorApplication.isPlaying && !onPlayMode)
+            if (EditorApplication.isPlaying && !onPlayMode)
             {
                 onPlayMode = true;
             }
-            if(!EditorApplication.isPlaying && onPlayMode)
+            if (!EditorApplication.isPlaying && onPlayMode)
             {
                 onPlayMode = false;
                 Init();
             }
-        }
-
-        private void OnInspectorUpdate()
-        {
-            if (mockupDownloadDelayCounter <= 5)
+            if (GUI.changed)
             {
-                mockupDownloadDelayCounter++;
+                GUI.changed = false;
+                Repaint();
             }
         }
 
@@ -96,7 +90,7 @@ namespace SMG.EzScreenshot
             EditorGUI.BeginChangeCheck();
             encodeSettings.Draw();
             resolutions.Draw(); ;
-            mockup.Draw(mockupDownloadDelayCounter);
+            mockup.Draw();
             shadow.Draw();
             background.Draw(position);
             if (EditorGUI.EndChangeCheck())
@@ -105,12 +99,12 @@ namespace SMG.EzScreenshot
                 template.UpdateTemplatesReList();
                 encodeSettings.UpdateCamerasReList();
                 background.UpdateBgColorsReList();
-                Repaint();
             }
             EditorGUI.EndDisabledGroup();
             EzSS_Style.DrawUILine(EzSS_Style.uiLineColor);
             EditorGUILayout.EndScrollView();
             takeScreenshot.Draw(position);
+
         }
 
         #region    [ Menu Items  ]
@@ -165,7 +159,7 @@ namespace SMG.EzScreenshot
         public static void TakeScreenshot()
         {
             EzSS_Window[] _window = Resources.FindObjectsOfTypeAll<EzSS_Window>();
-            if(_window.Length > 0)
+            if (_window.Length > 0)
             {
                 _window[0].takeScreenshot.TakeScreenshot(false);
             }

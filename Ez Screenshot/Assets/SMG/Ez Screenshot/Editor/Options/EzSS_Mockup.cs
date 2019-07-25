@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System;
+using UnityEngine.Networking;
 
 namespace SMG.EzScreenshot
 {
@@ -10,6 +10,7 @@ namespace SMG.EzScreenshot
     {
         // General
         private EzSS_EncodeSettings encodeSettings;
+        private EzSS_Resolutions resolutions;
         private bool showMockup = true;
         private EzSS_Smartphones smartphones = new EzSS_Smartphones();
         private EzSS_Consoles consoles = new EzSS_Consoles();
@@ -46,6 +47,8 @@ namespace SMG.EzScreenshot
             landscapeRight
         }
         public Orientations selectedOrientation = Orientations.portrait;
+        // Offset
+        public Vector2 mockupOffset = Vector2.zero;
         // Selection variables
         public int selectedMockupIndex;
         public int selectedColorIndex;
@@ -62,7 +65,7 @@ namespace SMG.EzScreenshot
         // Mockup textures
         public Texture2D mockupTexture;
         public Texture2D screenTexture;
-        private readonly string texturesURL = "https://solomidgames.com/projects/ezScreenshot/mockups/";
+        private readonly string baseTexturesURL = "https://solomidgames.com/projects/ezScreenshot/mockups/";
         public List<string> mockupsTexturesKeys = new List<string>();
         public List<string> screensTexturesKeys = new List<string>();
         public List<Texture2D> mockupsTextures = new List<Texture2D>();
@@ -70,15 +73,20 @@ namespace SMG.EzScreenshot
         private string lastMockupName;
         private string lastColorName;
         private string lastOrientationName;
+        // Download manager
+        private UnityWebRequest webRequest;
+        private string mockupTextureURL;
+        private string screenTextureURL;
+        public bool editorUpdateIsRunning = false;
         private bool downloadMockupTexture = false;
         private bool downloadScreenTexture = false;
-        private bool isFirstDownload = false;
-        private bool forceGuiChange = false;
-        private int mockupDownloadDelayCounter; // Delays the downloaded of the texture when the project gets loaded
+        private bool isDownloadingMockupTexture = false;
+        private bool isDownloadingScreenTexture = false;
 
-        public void Init(EzSS_EncodeSettings encodeSettings)
+        public void Init(EzSS_EncodeSettings encodeSettings, EzSS_Resolutions resolutions)
         {
             this.encodeSettings = encodeSettings;
+            this.resolutions = resolutions;
             smartphones.Init(this);
             consoles.Init(this);
             computers.Init(this);
@@ -90,18 +98,10 @@ namespace SMG.EzScreenshot
             selectedColorName = mockupsColors[selectedMockupName][selectedColorIndex];
             selectedCategoryName = selectedCategory.ToString();
             selectedOrientationName = selectedOrientation.ToString();
-            isFirstDownload = true;
         }
 
-        public void Draw(int mockupDownloadDelayCounter)
+        public void Draw()
         {
-            this.mockupDownloadDelayCounter = mockupDownloadDelayCounter;
-            // This is important because when the texture is downloaded the gui change is missid and the values storaged for mokcu and color are wrong.
-            if (forceGuiChange)
-            {
-                forceGuiChange = false;
-                GUI.changed = true;
-            }
             if (encodeSettings.useMockup)
             {
                 Rect _rect = EditorGUILayout.BeginVertical();
@@ -177,6 +177,29 @@ namespace SMG.EzScreenshot
             {
                 selectedOrientation = Orientations.portrait;
             }
+            // Ofsset
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PrefixLabel("Offset:");
+            GUILayout.Space(-15);
+            mockupOffset = EditorGUILayout.Vector2Field(string.Empty, mockupOffset);
+            EditorGUILayout.EndHorizontal();
+            // Is offset bigger or smaller than the screenshot size?
+            if (mockupOffset.x > resolutions.screenshotWidth)
+            {
+                mockupOffset = new Vector2(resolutions.screenshotWidth, mockupOffset.y);
+            }
+            else if (mockupOffset.x < -resolutions.screenshotWidth)
+            {
+                mockupOffset = new Vector2(-resolutions.screenshotWidth, mockupOffset.y);
+            }
+            if (mockupOffset.y > resolutions.screenshotHeight)
+            {
+                mockupOffset = new Vector2(mockupOffset.x, resolutions.screenshotHeight);
+            }
+            else if (mockupOffset.y < -resolutions.screenshotHeight)
+            {
+                mockupOffset = new Vector2(mockupOffset.x, -resolutions.screenshotHeight);
+            }
             selectedOrientationName = selectedOrientation.ToString();
             // After the selection check if the textures exists on the project
             CheckMockupTextures();
@@ -207,8 +230,8 @@ namespace SMG.EzScreenshot
             mockupTexture == null))
             {
                 // creates the final url
-                string _mockupUrl = texturesURL + selectedCategoryName + "/" + selectedMockupName + "-" + selectedColorName + "-" + selectedOrientationName + ".png";
-                string _screenUrl = texturesURL + selectedCategoryName + "/" + selectedMockupName + "-screen" + "-" + selectedOrientationName + ".png";
+                string _mockupUrl = baseTexturesURL + selectedCategoryName + "/" + selectedMockupName + "-" + selectedColorName + "-" + selectedOrientationName + ".png";
+                string _screenUrl = baseTexturesURL + selectedCategoryName + "/" + selectedMockupName + "-screen" + "-" + selectedOrientationName + ".png";
                 // Set the variables to download the textures
                 downloadScreenTexture = true;
                 downloadMockupTexture = true;
@@ -217,6 +240,11 @@ namespace SMG.EzScreenshot
                 {
                     downloadScreenTexture = false;
                     screenTexture = screensTextures[screensTexturesKeys.IndexOf(_screenUrl)];
+                }
+                else
+                {
+                    screenTextureURL = _screenUrl;
+                    screenTexture = null;
                 }
                 // The mockup texture will be downloaded if the key isn't present inside the dictionary
                 if (mockupsTexturesKeys.Contains(_mockupUrl))
@@ -228,90 +256,109 @@ namespace SMG.EzScreenshot
                     lastColorName = selectedColorName;
                     lastOrientationName = selectedOrientationName;
                 }
-
-                if (mockupDownloadDelayCounter < 5)
+                else
                 {
+                    mockupTextureURL = _mockupUrl;
+                    mockupTexture = null;
+                }
+
+                if (!editorUpdateIsRunning && (downloadMockupTexture || downloadScreenTexture))
+                {
+                    editorUpdateIsRunning = true;
+                    EditorApplication.update += EditorUpdate;
+                }
+            }
+        }
+
+        private void EditorUpdate()
+        {
+            if (downloadScreenTexture && !isDownloadingScreenTexture)
+            {
+                isDownloadingScreenTexture = true;
+                // webRequest = new UnityWebRequest();
+                webRequest = UnityWebRequestTexture.GetTexture(screenTextureURL);
+                // Starts the web request
+                webRequest.SendWebRequest();
+            }
+            else if (screenTexture != null && downloadMockupTexture && !isDownloadingMockupTexture)
+            {
+                isDownloadingMockupTexture = true;
+                // webRequest = new UnityWebRequest();
+                webRequest = UnityWebRequestTexture.GetTexture(mockupTextureURL);
+                // Starts the web request
+                webRequest.SendWebRequest();
+            }
+            if (isDownloadingMockupTexture || isDownloadingScreenTexture)
+            {
+                // Wait until is done
+                if (!webRequest.isDone)
+                {
+                    if (isDownloadingMockupTexture)
+                    {
+                        EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockTexture, webRequest.downloadProgress);
+                    }
+                    else if (isDownloadingScreenTexture)
+                    {
+                        EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockupScreen, webRequest.downloadProgress);
+                    }
                     return;
                 }
-                else if(isFirstDownload)
+                // Check for erros
+                if (webRequest.isNetworkError || webRequest.isHttpError)
                 {
-                    DownloadScreenTexture(_screenUrl);
-                    DownloadMockupTexture(_mockupUrl);
-                    isFirstDownload = false;
-                }
-                else if (downloadMockupTexture && !downloadScreenTexture)
-                {
-                    DownloadMockupTexture(_mockupUrl);
-                    GUIUtility.ExitGUI();
-                }
-                else if (!downloadMockupTexture && downloadScreenTexture)
-                {
-                    DownloadScreenTexture(_screenUrl);
-                    GUIUtility.ExitGUI();
-                }
-                else if (downloadMockupTexture && downloadScreenTexture) 
-                {
-                    DownloadScreenTexture(_screenUrl);
-                    DownloadMockupTexture(_mockupUrl);
-                    GUIUtility.ExitGUI();
+                    if (isDownloadingMockupTexture)
+                    {
+                        EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupTexture + webRequest.error, FEEDBACKS.Buttons.close);
+                    }
+                    else if (isDownloadingScreenTexture)
+                    {
+                        EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupScreen + webRequest.error, FEEDBACKS.Buttons.close);
+                    }
+                    encodeSettings.useMockup = false;
+                    FinishEditorUpdate();
                 }
                 else
                 {
-                    // Both textures are inside the dictionary
+                    if (downloadMockupTexture && isDownloadingMockupTexture)
+                    {
+                        isDownloadingMockupTexture = false;
+                        downloadMockupTexture = false;
+                        mockupTexture = new Texture2D(DownloadHandlerTexture.GetContent(webRequest).width, DownloadHandlerTexture.GetContent(webRequest).height, TextureFormat.ARGB32, false);
+                        Graphics.CopyTexture(DownloadHandlerTexture.GetContent(webRequest), mockupTexture);
+                        mockupsTexturesKeys.Add(mockupTextureURL);
+                        mockupsTextures.Add(mockupTexture);
+                    }
+                    else if (downloadScreenTexture && isDownloadingScreenTexture)
+                    {
+                        isDownloadingScreenTexture = false;
+                        downloadScreenTexture = false;
+                        screenTexture = new Texture2D(DownloadHandlerTexture.GetContent(webRequest).width, DownloadHandlerTexture.GetContent(webRequest).height, TextureFormat.ARGB32, false);
+                        Graphics.CopyTexture(DownloadHandlerTexture.GetContent(webRequest), screenTexture);
+                        screensTexturesKeys.Add(screenTextureURL);
+                        screensTextures.Add(screenTexture);
+                    }
                 }
+            }
+
+            // Finish if there's nothing more to download
+            if (mockupTexture != null && screenTexture != null)
+            {
+                FinishEditorUpdate();
             }
         }
 
-        private void DownloadMockupTexture(string url)
+        private void FinishEditorUpdate()
         {
-            EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockTexture, 0);
-            WWW _wwwLoader = new WWW(url);
-            // Wait until download is done
-            while (!_wwwLoader.isDone)
-            {
-                EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockTexture, _wwwLoader.progress);
-            }
-            // Download is done
+            // Update is no longer necessary
+            EditorApplication.update -= EditorUpdate;
+            editorUpdateIsRunning = false;
+            // editorUpdateIsRunning = false;
             EditorUtility.ClearProgressBar();
-            // Check for errors
-            if (!string.IsNullOrEmpty(_wwwLoader.error))
-            {
-                encodeSettings.useMockup = false;
-                EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupTexture + _wwwLoader.error, FEEDBACKS.Buttons.close);
-                return;
-            }
-            // Set the mockupImage
-            mockupTexture = _wwwLoader.texture;
-            mockupsTexturesKeys.Add(url);
-            mockupsTextures.Add(mockupTexture);
             // Updated the mockup information
-            forceGuiChange = true;
             lastMockupName = selectedMockupName;
             lastColorName = selectedColorName;
             lastOrientationName = selectedOrientationName;
-        }
-
-        private void DownloadScreenTexture(string url)
-        {
-            EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockupScreen, 0);
-            WWW _wwwLoader = new WWW(url);
-            // Wait until download is done
-            while (!_wwwLoader.isDone)
-            {
-                EditorUtility.DisplayProgressBar(FEEDBACKS.Titles.wait, FEEDBACKS.Mockup.definingMockupScreen, _wwwLoader.progress);
-            }
-            // Download is done
-            EditorUtility.ClearProgressBar();
-            // Check for errors
-            if (!string.IsNullOrEmpty(_wwwLoader.error))
-            {
-                encodeSettings.useMockup = false;
-                EditorUtility.DisplayDialog(FEEDBACKS.Titles.attention, FEEDBACKS.Mockup.errorDefiningMockupScreen + _wwwLoader.error, FEEDBACKS.Buttons.close);
-            }
-            // Set the mockupImage
-            screenTexture = _wwwLoader.texture;
-            screensTexturesKeys.Add(url);
-            screensTextures.Add(screenTexture);
+            GUI.changed = true;
         }
     }
 }

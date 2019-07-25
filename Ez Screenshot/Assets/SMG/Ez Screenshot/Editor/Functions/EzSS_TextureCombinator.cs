@@ -20,6 +20,15 @@ namespace SMG.EzScreenshot
             return Combine(bgTexture, fgTexture, _result, _offset, Combination.simple, alphaBlended);
         }
 
+        public static Texture2D Simple(Texture2D bgTexture, Texture2D fgTexture, bool alphaBlended, Vector2 mockupOffset)
+        {
+            // Calculate the offsetbased on the size difference of the bgTexture and fgTexture
+            Vector2 _offset = new Vector2((((bgTexture.width - fgTexture.width)) / 2), (((bgTexture.height - fgTexture.height)) / 2));
+            _offset = new Vector2(_offset.x + mockupOffset.x, _offset.y + mockupOffset.y);
+            Texture2D _result = new Texture2D(bgTexture.width, bgTexture.height);
+            return Combine(bgTexture, fgTexture, _result, _offset, Combination.simple, alphaBlended);
+        }
+
         public static Texture2D Shadow(Texture2D bgTexture, Texture2D fgTexture, EzSS_Shadow shadow)
         {
             Texture2D _result = new Texture2D(bgTexture.width, bgTexture.height);
@@ -31,6 +40,20 @@ namespace SMG.EzScreenshot
             _shadowOffset = new Vector2((shadow.direction.x / 100) * fgTexture.width, (shadow.direction.y / 100) * fgTexture.height);
             // Add to _offset the shadow offset
             _offset = new Vector2(_offset.x + _shadowOffset.x, _offset.y + _shadowOffset.y);
+            return Combine(bgTexture, fgTexture, _result, _offset, Combination.shadow, false);
+        }
+
+        public static Texture2D Shadow(Texture2D bgTexture, Texture2D fgTexture, EzSS_Shadow shadow, Vector2 mockupOffset)
+        {
+            Texture2D _result = new Texture2D(bgTexture.width, bgTexture.height);
+            Vector2 _offset = Vector2.zero;
+            Vector2 _shadowOffset = Vector2.zero;
+            // Calculate the offsetbased on the size difference of the bgTexture and fgTexture
+            _offset = new Vector2(((bgTexture.width - fgTexture.width)) / 2, ((bgTexture.height - fgTexture.height)) / 2);
+            // Calculate the shadow offset based on the shadow direction
+            _shadowOffset = new Vector2((shadow.direction.x / 100) * fgTexture.width, (shadow.direction.y / 100) * fgTexture.height);
+            // Add to _offset the shadow offset
+            _offset = new Vector2((_offset.x + _shadowOffset.x) + mockupOffset.x, (_offset.y + _shadowOffset.y) + mockupOffset.y);
             return Combine(bgTexture, fgTexture, _result, _offset, Combination.shadow, false);
         }
 

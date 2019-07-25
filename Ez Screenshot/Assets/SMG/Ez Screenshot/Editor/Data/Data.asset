@@ -18,6 +18,7 @@ MonoBehaviour:
     encodeSettings:
       camerasNames:
       - Main Camera
+      - Camera UI
       encodeType: 0
       jpgQuality: 1
       namePrefix: 
@@ -45,26 +46,23 @@ MonoBehaviour:
       mockupAspectType: 1
       lastMockupAspectType: 1
       mockupPortraitAspectIndex: 9
-      mockupLandscapeAspectIndex: 1
-      mockupWidth: 499
+      mockupLandscapeAspectIndex: 10
+      mockupWidth: 497
       mockupHeight: 1000
       mockupResAspect: 9:19.5
       aspectVector: {x: 18, y: 39}
     mockup:
       selectedCategory: 3
       selectedOrientation: 0
-      selectedMockupIndex: 1
-      selectedColorIndex: 0
+      selectedMockupIndex: 2
+      selectedColorIndex: 2
+      mockupOffset: {x: 0, y: 0}
     shadow:
       color: {r: 0, g: 0, b: 0, a: 0.29411766}
       direction: {x: -2, y: -3}
       softness: 10
     background:
       bgColors:
-      - color: {r: 1, g: 0.6084906, b: 0.6084906, a: 1}
+      - color: {r: 1, g: 0.6367924, b: 0.6367924, a: 1}
         time: 0
-      - color: {r: 1, g: 0.6367924, b: 0.9371279, a: 1}
-        time: 1
-      - color: {r: 0.9433962, g: 0.20914915, b: 0.20914915, a: 1}
-        time: 0
-      bgType: 3
+      bgType: 0
