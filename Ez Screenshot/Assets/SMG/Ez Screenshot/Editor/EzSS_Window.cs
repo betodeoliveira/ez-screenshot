@@ -119,28 +119,10 @@ namespace SMG.EzScreenshot
             _window.Show();
         }
 
-        [MenuItem("Window/Ez Screenshot/Guide")]
-        public static void Guide()
-        {
-            Application.OpenURL("https://solomidgames.com/guides/ez-screenshot/quick-overview.html");
-        }
-
-        [MenuItem("Window/Ez Screenshot/Help")]
-        public static void Help()
-        {
-            Application.OpenURL("mailto:help@solomidgames.com");
-        }
-
-        [MenuItem("Window/Ez Screenshot/Forum Thread")]
-        public static void ForumThread()
-        {
-            Application.OpenURL("https://forum.unity.com/threads/released-ez-screenshot.633328/");
-        }
-
         [MenuItem("Window/Ez Screenshot/More Assets")]
         public static void MoreAssets()
         {
-            Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/search/page=1/sortby=popularity/query=publisher:11524");
+            Application.OpenURL("https://github.com/betodeoliveira?tab=repositories");
         }
 
         [MenuItem("Window/Ez Screenshot/Website")]
@@ -149,10 +131,22 @@ namespace SMG.EzScreenshot
             Application.OpenURL("https://solomidgames.com");
         }
 
-        [MenuItem("Window/Ez Screenshot/Follow us on Twitter")]
-        public static void FollowTwitter()
+        [MenuItem("Window/Ez Screenshot/LinkedIn")]
+        public static void LinkedIn()
         {
-            Application.OpenURL("https://twitter.com/solomidgames");
+            Application.OpenURL("https://www.linkedin.com/in/alberto-de-oliveira-8b1a6365/");
+        }
+
+        [MenuItem("Window/Ez Screenshot/Twitter")]
+        public static void Twitter()
+        {
+            Application.OpenURL("https://twitter.com/beto_deoliveira");
+        }
+
+        [MenuItem("Window/Ez Screenshot/Facebook")]
+        public static void Facebook()
+        {
+            Application.OpenURL("https://www.facebook.com/betovdeoliveira");
         }
 
         [MenuItem("Window/Ez Screenshot/Take Screenshot %t")]

@@ -66,7 +66,7 @@ namespace SMG.EzScreenshot
         // Mockup textures
         public Texture2D mockupTexture;
         public Texture2D screenTexture;
-        private readonly string baseTexturesURL = "https://solomidgames.com/projects/ezScreenshot/mockups/";
+        private readonly string baseTexturesURL = "https://raw.githubusercontent.com/betodeoliveira/ez-screenshot/master/Mockups/";
         public List<string> mockupsTexturesKeys = new List<string>();
         public List<string> screensTexturesKeys = new List<string>();
         public List<Texture2D> mockupsTextures = new List<Texture2D>();
