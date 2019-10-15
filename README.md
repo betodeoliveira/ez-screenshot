@@ -1,4 +1,4 @@
-# asset-store-about
+# About
 
 Ez screenshot is the perfect tool to take screenshots of your game to use on the stores, share on social media, stores and much more! </br>
 </br>
