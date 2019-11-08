@@ -1,6 +1,6 @@
 # About
 
-Ez Screenshot is the perfect tool to take screenshots of your project and use them on stores and social media. It is possible to add a background, create shadows and event place the image inside a mockup.
+Ez Screenshot is the perfect tool to take screenshots of your project and use them on stores and social media. It is possible to add a background, create shadows and even place the image inside a mockup.
 
 ## Mockups
 
