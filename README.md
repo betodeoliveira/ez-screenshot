@@ -1,12 +1,6 @@
 # About
 
-Ez screenshot is the perfect tool to take screenshots of your game to use on the stores, share on social media, stores and much more!
-
-It's not just to take screenshots, Ez Screenshot has a bunch of customizations to improve the quality of the image. Add a nice gradient background, set the shadow behind the image or even place the image inside a mockup and see how the game may look like on a specific device.
-
-The screenshots will be ready to be shared with customers, followers and clients, so it’s perfect to be used as a marketing solution.
-
-Ez Screenshot runs directly in Editor and is available on all platforms.
+Ez Screenshot is the perfect tool to take screenshots of your project and use them on stores and social media. It is possible to add a background, create shadows and event place the image inside a mockup.
 
 ## Mockups
 
